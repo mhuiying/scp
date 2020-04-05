@@ -8,11 +8,10 @@ scp(
   s0,
   s,
   Y,
-  global = TRUE,
+  global = FALSE,
   eta = Inf,
   m = NULL,
   pred_fun = krige_pred,
-  theta = NULL,
   alpha = 0.05,
   dfun = "std_residual2",
   precision = 0.01
@@ -43,4 +42,23 @@ if FALSE, \code{scp} function returns the result of local spatial conformal pred
 }
 \description{
 This function provides the conformal prediction interval for spatial location \code{s0} given obserations \code{s, Y}.
+}
+\examples{
+N = 41; n = N^2
+S = seq(0,1,length=N)
+s = expand.grid(S,S)
+d = as.matrix(dist(s))
+
+theta        = c(0,3,0.1,0.7)
+names(theta) = c("Nugget","PartialSill","Range","Smoothness")
+C = mat_cov(d,theta)
+X = t(chol(C))\%*\%rnorm(n)
+Y = X^3 + rnorm(n)
+
+s0 = c(0.5, 0.5)
+idx = which(s[,1]==s0[1] & s[,2]==s0[2])
+pred_fun = function(s0,s,Y,alpha=0.05) return(mean(Y))
+PI = scp(s0,s[-idx,],Y[-idx],pred_fun=pred_fun, dfun="abs_residual",precision=0.1)
+cat(paste("True value: ", Y[idx], "\n"))
+cat(paste("Prediction Interval: [ ", PI[1], ",", PI[2], "]"))
 }

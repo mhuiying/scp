@@ -2,9 +2,11 @@
 
 export(compute_UVW)
 export(conformal_pred)
+export(fast_scp)
 export(get_theta)
 export(krige_pred)
 export(lscp)
 export(mat_cov)
 export(scp)
 importFrom(geoR,matern)
+importFrom(geoR,variog)

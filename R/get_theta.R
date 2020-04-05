@@ -7,9 +7,13 @@
 #'
 #' @return Matern covariance parameters
 #' @export
+#'
+#' @importFrom geoR variog
 get_theta = function(s,Y,dists=NULL,plot_fitted=FALSE){
-  library(geoR)
-  options(warn=-1)
+
+  if( length(Y) != nrow(s) )
+    stop( paste("the number of Y obs,", length(Y), ", does not match the number of locations,", nrow(s)) )
+
   if(length(Y) < 10^6){
     vario <- variog(coords=s,data=Y,uvec=dists,messages=FALSE)
   } else {

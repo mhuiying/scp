@@ -25,7 +25,8 @@ The goal of scp is to provide spatial prediction intervals using Global Spatial 
 You can install the released version of scp from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-install.packages("scp")
+<!-- install.packages("scp") -->
+install_github("mhuiying/scp",auth_token = "53232d302e23533a1219e3fcdbde5d22c105dfc0")
 ```
 
 ## Example
@@ -60,10 +61,24 @@ cat(paste("Prediction Interval: [ ", PI[1], ",", PI[2], "]"))
 
 A visualization of the spatial process:
 
-```{r pressure, echo = FALSE}
+```{r visual, echo = FALSE}
 suppressMessages(library(fields))
 suppressMessages(library(viridis))
 image.plot(S,S,matrix(Y,N,N),col = viridis(50, option = "D"),
            las=1, xlab = expression(s[x]), ylab = expression(s[y]),
            main = expression(paste("Y = ", X^3, " + E")))
+```
+
+User can also customize the nonconformity measure, (running time too long, so I commented it out for now)
+```{r}
+# PI2 = scp(s0,s[-idx,],Y[-idx],pred_fun=krige_pred, dfun="abs_residual",precision=0.1)
+# cat(paste("Prediction Interval: [ ", PI2[1], ",", PI2[2], "]"))
+```
+
+or the predictive function.
+
+```{r self-defined pred_fun}
+pred_fun = function(s0,s,Y,alpha) return(mean(Y))
+PI3 = scp(s0,s[-idx,],Y[-idx],pred_fun=pred_fun, dfun="abs_residual",precision=0.1)
+cat(paste("Prediction Interval: [ ", PI3[1], ",", PI3[2], "]"))
 ```
