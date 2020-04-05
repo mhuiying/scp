@@ -4,20 +4,22 @@
 \alias{conformal_pred}
 \title{Spatial Conformal Prediction Intervals}
 \usage{
-conformal_pred(s0, s, Y, theta, eta = Inf, eps = 0.05)
+conformal_pred(s0, s, Y, theta, eta = Inf, m = NULL, alpha = 0.05)
 }
 \arguments{
 \item{s0}{prediction location}
 
-\item{s}{an \eqn{n \times 2}{n x 2} matrix or data-frame with the 2-D coordinates of the \eqn{n} data locations.}
+\item{s}{an \eqn{n \times d}{n x d} matrix or data-frame with \eqn{d} coordinates of the \eqn{n} data locations.}
 
 \item{Y}{a vector with \eqn{n} data values.}
 
 \item{theta}{spatial covariance parameters as in \code{\link{mat_cov}}}
 
-\item{eps}{significance level. The default is 0.05.}
+\item{eta}{numerical value of the kernel bandwidth for the weight schema in conformal prediction. Defauls to \eqn{Inf} meaning equal weight on surrounding \eqn{m} points.}
 
-\item{r}{numerical value of the kernel bandwidth for the weight schema in conformal prediction. The defaul is \eqn{Inf} meaning equal weight on surrounding \eqn{m} points.}
+\item{m}{an postive integer representing the number of nearest locations used for prediction. Depends on eta.}
+
+\item{alpha}{significance level. Defaults to 0.05.}
 }
 \value{
 A vector of lower and upper bounds of the conformal prediction interval.
@@ -27,7 +29,7 @@ This function provides the conformal prediction interval for spatial location \c
 }
 \examples{
 N = 40; n = N^2
-S = seq(0,1,length=40)
+S = seq(0,1,length=N)
 s <- expand.grid(S,S)
 d <- as.matrix(dist(s))
 
@@ -43,5 +45,5 @@ thetaHat <- get_theta(s,Y,dists=bins,plot_fitted=FALSE)
 Q        <- solve(mat_cov(d,thetaHat))
 
 s0       <- c(0.5, 0.5)
-conformal_pred(s0,s,Y,thetaHat,m=100,eta=0.1,eps=eps)
+conformal_pred(s0,s,Y,thetaHat,m=100,eta=0.1)
 }

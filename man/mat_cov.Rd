@@ -7,12 +7,12 @@
 mat_cov(d, theta)
 }
 \arguments{
-\item{d}{distances}
+\item{d}{a numeric distance, a vector of distances, or a distance matrix}
 
-\item{theta}{covariance parameters}
+\item{theta}{Matern covariance parameters}
 }
 \value{
-a covariance matrix
+a numeric covariance, a vector of covariances, or a covariance matrix in the same size of \eqn{d}
 }
 \description{
 Matern covariance function
