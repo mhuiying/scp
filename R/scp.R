@@ -9,12 +9,12 @@
 #' if FALSE, \code{scp} function returns the result of local spatial conformal prediction \code{\link{lscp}}.
 #' @param eta numerical value of the kernel bandwidth for the weight schema in conformal prediction. Defauls to \eqn{Inf} meaning equal weight on surrounding \eqn{m} points.
 #' @param m an postive integer representing the number of nearest locations used for prediction. Depends on eta.
-#' @param pred_fun
+#' @param pred_fun spatial point prediction function
 #' @param alpha significance level. Defaults to 0.05.
 #' @param dfun non-conformity measure
 #' @param precision Defaults to 0.01.
 #'
-#' @return
+#' @return A vector of lower and upper bounds of the conformal prediction interval.
 #' @export
 #'
 #' @examples

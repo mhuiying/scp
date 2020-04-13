@@ -7,6 +7,10 @@
 
 [![Travis build
 status](https://travis-ci.com/mhuiying/scp.svg?branch=master)](https://travis-ci.com/mhuiying/scp)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/mhuiying/scp?branch=master&svg=true)](https://ci.appveyor.com/project/mhuiying/scp)
+[![Codecov test
+coverage](https://codecov.io/gh/mhuiying/scp/branch/master/graph/badge.svg)](https://codecov.io/gh/mhuiying/scp?branch=master)
 <!-- badges: end -->
 
 The goal of scp is to provide spatial prediction intervals using Global
@@ -19,8 +23,7 @@ You can install the released version of scp from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-<!-- install.packages("scp") -->
-install_github("mhuiying/scp",auth_token = "53232d302e23533a1219e3fcdbde5d22c105dfc0")
+install.packages("scp")
 ```
 
 ## Example
@@ -50,9 +53,9 @@ s0  = c(0.5, 0.5)
 idx = which(s[,1]==s0[1] & s[,2]==s0[2])
 PI  = conformal_pred(s0,s[-idx,],Y[-idx],thetaHat,eta=0.1)
 cat(paste("True value: ", Y[idx], "\n"))
-#> True value:  0.0872833272237508
+#> True value:  3.64266313547056
 cat(paste("Prediction Interval: [ ", PI[1], ",", PI[2], "]"))
-#> Prediction Interval: [  -7.05931960574319 , 5.80462958793172 ]
+#> Prediction Interval: [  -6.39538910108632 , 79.4625563839406 ]
 ```
 
 A visualization of the spatial process:
@@ -74,5 +77,5 @@ or the predictive function.
 pred_fun = function(s0,s,Y,alpha) return(mean(Y))
 PI3 = scp(s0,s[-idx,],Y[-idx],pred_fun=pred_fun, dfun="abs_residual",precision=0.1)
 cat(paste("Prediction Interval: [ ", PI3[1], ",", PI3[2], "]"))
-#> Prediction Interval: [  -29.2298252975123 , 25.6701747024877 ]
+#> Prediction Interval: [  -33.5440589583648 , 40.6559410416352 ]
 ```

@@ -31,6 +31,8 @@ if FALSE, \code{scp} function returns the result of local spatial conformal pred
 
 \item{m}{an postive integer representing the number of nearest locations used for prediction. Depends on eta.}
 
+\item{pred_fun}{spatial point prediction function}
+
 \item{alpha}{significance level. Defaults to 0.05.}
 
 \item{dfun}{non-conformity measure}
@@ -38,7 +40,7 @@ if FALSE, \code{scp} function returns the result of local spatial conformal pred
 \item{precision}{Defaults to 0.01.}
 }
 \value{
-
+A vector of lower and upper bounds of the conformal prediction interval.
 }
 \description{
 This function provides the conformal prediction interval for spatial location \code{s0} given obserations \code{s, Y}.

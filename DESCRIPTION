@@ -15,7 +15,9 @@ URL: https://github.com/mhuiying/scp
 BugReports: https://github.com/mhuiying/scp/issues
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr,
+    testthat
 VignetteBuilder: knitr
 Imports: 
     geoR

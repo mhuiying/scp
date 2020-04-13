@@ -17,6 +17,8 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.com/mhuiying/scp.svg?branch=master)](https://travis-ci.com/mhuiying/scp)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/mhuiying/scp?branch=master&svg=true)](https://ci.appveyor.com/project/mhuiying/scp)
+[![Codecov test coverage](https://codecov.io/gh/mhuiying/scp/branch/master/graph/badge.svg)](https://codecov.io/gh/mhuiying/scp?branch=master)
 <!-- badges: end -->
 
 The goal of scp is to provide spatial prediction intervals using Global Spatial Conformal Prediction (GSCP) and Local Spatial Conformal Prediction (LSCP).
@@ -26,13 +28,16 @@ The goal of scp is to provide spatial prediction intervals using Global Spatial 
 You can install the released version of scp from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-<!-- install.packages("scp") -->
-install_github("mhuiying/scp",auth_token = "53232d302e23533a1219e3fcdbde5d22c105dfc0")
+install.packages("scp")
 ```
 
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
+
+```{r, echo=FALSE}
+set.seed(919)
+```
 
 ```{r example}
 library(scp)

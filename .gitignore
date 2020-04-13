@@ -3,3 +3,8 @@
 .RData
 .Ruserdata
 inst/doc
+.yml
+README.Rmd
+.Rbuildignore
+.gitignore
+.Rproj
