@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![Travis build
+status](https://travis-ci.com/mhuiying/scp.svg?branch=master)](https://travis-ci.com/mhuiying/scp)
 <!-- badges: end -->
 
 The goal of scp is to provide spatial prediction intervals using Global
@@ -48,9 +50,9 @@ s0  = c(0.5, 0.5)
 idx = which(s[,1]==s0[1] & s[,2]==s0[2])
 PI  = conformal_pred(s0,s[-idx,],Y[-idx],thetaHat,eta=0.1)
 cat(paste("True value: ", Y[idx], "\n"))
-#> True value:  0.163383695736793
+#> True value:  0.0872833272237508
 cat(paste("Prediction Interval: [ ", PI[1], ",", PI[2], "]"))
-#> Prediction Interval: [  -10.4945921329898 , 29.9807915632017 ]
+#> Prediction Interval: [  -7.05931960574319 , 5.80462958793172 ]
 ```
 
 A visualization of the spatial process:
@@ -72,5 +74,5 @@ or the predictive function.
 pred_fun = function(s0,s,Y,alpha) return(mean(Y))
 PI3 = scp(s0,s[-idx,],Y[-idx],pred_fun=pred_fun, dfun="abs_residual",precision=0.1)
 cat(paste("Prediction Interval: [ ", PI3[1], ",", PI3[2], "]"))
-#> Prediction Interval: [  -33.8332433015048 , 30.0667566984952 ]
+#> Prediction Interval: [  -29.2298252975123 , 25.6701747024877 ]
 ```
