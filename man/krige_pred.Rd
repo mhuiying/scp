@@ -10,6 +10,7 @@ krige_pred(
   Y,
   alpha = 0.05,
   thetaHat = NULL,
+  Q = NULL,
   interval = FALSE,
   return_sd = FALSE
 )

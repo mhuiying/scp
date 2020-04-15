@@ -2,11 +2,10 @@ Package: scp
 Type: Package
 Title: Spatial Conformal Prediction
 Version: 0.1.0
-Author: Maggie Mao <hmao@samsi.info>
-Maintainer: Maggie Mao <hmao@samsi.info>
-Description: Provide spatial prediction intervals 
-    using Global Spatial Conformal Prediction (GSCP) 
-    and Local Spatial Conformal Prediction (LSCP)
+Author: Huiying Mao <hmao@samsi.info>, Ryan Martin <rgmarti3@ncsu.edu>, Brian Reich <bjreich@ncsu.edu>
+Maintainer: Huiying Mao <hmao@samsi.info>
+Description: Provide robust, valid and model-free spatial prediction intervals 
+    using Spatial Conformal Prediction (SCP) algorithms
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

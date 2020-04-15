@@ -9,6 +9,8 @@
 #' @export
 #'
 #' @importFrom geoR variog
+#' @keywords internal
+#'
 get_theta = function(s,Y,dists=NULL,plot_fitted=FALSE){
 
   if( length(Y) != nrow(s) )

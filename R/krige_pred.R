@@ -30,7 +30,7 @@
 #' s0 = c(0.5, 0.5)
 #' krige_pred(s0,s,Y)
 #' krige_pred(s0,s,Y,interval=TRUE)
-krige_pred = function(s0,s,Y,alpha=0.05,thetaHat=NULL,interval=FALSE,return_sd=FALSE){
+krige_pred = function(s0,s,Y,alpha=0.05,thetaHat=NULL,Q=NULL,interval=FALSE,return_sd=FALSE){
 
   # Suppose s does not have duplicates
   # check s0 is numeric
@@ -41,21 +41,26 @@ krige_pred = function(s0,s,Y,alpha=0.05,thetaHat=NULL,interval=FALSE,return_sd=F
   if( length(s0) != ncol(s) )
     stop( paste("the dimension of s0,", length(s0), ", does not match the dimension of s,", ncol(s)) )
 
-  # Estimate Matern covariance parameters if not given
-  if(is.null(thetaHat)){
-    bins     <- seq(0.01,0.2,0.01)
-    thetaHat <- get_theta(s,Y,dists=bins)
+  # Estimate inverse covariance matrix if not given
+  if(is.null(Q)){
+
+    # Estimate Matern covariance parameters if not given
+    if(is.null(thetaHat)){
+      bins     = seq(0.01,0.2,0.01)
+      thetaHat = get_theta(s,Y,dists=bins)
+    }
+
+    idx = which(s[,1]==s0[1] & s[,2]==s0[2])
+    if(length(idx) > 0){s = s[-idx,]; Y = Y[-idx]}
+
+    # distance matrix
+    s_aug = rbind(s0,s)
+    d_aug = as.matrix(dist(s_aug))
+
+    # inverse covariance matrix
+    Q = solve(mat_cov(d_aug,thetaHat))
+
   }
-
-  idx = which(s[,1]==s0[1] & s[,2]==s0[2])
-  if(length(idx) > 0){s = s[-idx,]; Y = Y[-idx]}
-
-  # distance matrix
-  s_all = rbind(s0,s)
-  d_all = as.matrix(dist(s_all))
-
-  # inverse covariance matrix
-  Q = solve(mat_cov(d_all,thetaHat))
 
   # Kriging prediction
   yhat  = as.numeric(-Q[1,-1]%*%Y/Q[1,1])

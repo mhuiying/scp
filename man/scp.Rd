@@ -14,7 +14,7 @@ scp(
   pred_fun = krige_pred,
   alpha = 0.05,
   dfun = "std_residual2",
-  precision = 0.01
+  precision = NULL
 )
 }
 \arguments{
@@ -60,7 +60,7 @@ Y = X^3 + rnorm(n)
 s0 = c(0.5, 0.5)
 idx = which(s[,1]==s0[1] & s[,2]==s0[2])
 pred_fun = function(s0,s,Y,alpha=0.05) return(mean(Y))
-PI = scp(s0,s[-idx,],Y[-idx],pred_fun=pred_fun, dfun="abs_residual",precision=0.1)
+PI = scp(s0,s[-idx,],Y[-idx],pred_fun=pred_fun, dfun="abs_residual")
 cat(paste("True value: ", Y[idx], "\n"))
 cat(paste("Prediction Interval: [ ", PI[1], ",", PI[2], "]"))
 }
