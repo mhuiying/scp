@@ -55,7 +55,7 @@ conformal_pred = function(s0,s,Y,theta,eta=Inf,m=NULL,alpha=0.05){
   }
 
   Q      <- solve(mat_cov(d,theta))
-  UVW    <- compute_UVW(Q,Y)
+  UVW    <- .compute_UVW(Q,Y)
   U      <- UVW$U[-1]
   V      <- UVW$V[-1]
   W      <- UVW$W[-1]

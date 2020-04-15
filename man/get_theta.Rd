@@ -21,3 +21,4 @@ Matern covariance parameters
 \description{
 Estimate theta via variogram fitting
 }
+\keyword{internal}

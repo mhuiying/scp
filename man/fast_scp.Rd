@@ -4,20 +4,20 @@
 \alias{fast_scp}
 \title{Fast Spatial Conformal Prediction Intervals}
 \usage{
-fast_scp(s0, s, Y, thetaHat, alpha = 0.05)
+fast_scp(s0, s, Y, w, Q, alpha = 0.05, std = TRUE)
 }
 \arguments{
 \item{s0}{prediction location}
 
-\item{s}{an \eqn{n \times d}{n x d} matrix or data-frame with \eqn{d} coordinates of the \eqn{n} data locations.}
+\item{s}{an \eqn{n \times d} matrix or data-frame with \eqn{d} coordinates of the \eqn{n} data locations.}
 
 \item{Y}{a vector with \eqn{n} data values.}
 
-\item{thetaHat}{estimated Matern covariance parameters as in \code{\link{mat_cov}}}
+\item{w}{weights for the non-conformity measures.}
+
+\item{Q}{an \eqn{n+1 \times n+1} inverse of estimated covariance matrix}
 
 \item{alpha}{significance level. Defaults to 0.05.}
-
-\item{w}{weights for the non-conformity measures.}
 }
 \value{
 A vector of lower and upper bounds of the conformal prediction interval.
