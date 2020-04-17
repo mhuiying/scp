@@ -32,22 +32,14 @@
 #' @seealso \code{\link{plausibility}}
 #'
 #' @examples
-#' N = 41; n = N^2
-#' S = seq(0,1,length=N)
-#' s = expand.grid(S,S)
-#' d = as.matrix(dist(s))
+#' ## generate plausibility contour for Y(s0), where s0 = c(0.5,0.5), using sample data
 #'
-#' theta        = c(0,3,0.1,0.7)
-#' names(theta) = c("Nugget","PartialSill","Range","Smoothness")
+#' ?sample_data
+#' s0 = c(0.5,0.5)
+#' s  = sample_data$s
+#' Y  = sample_data$Y
 #'
-#' C = mat_cov(d,theta)
-#' X = t(chol(C))%*%rnorm(n)
-#' Y = X^3 + rnorm(n)
-#'
-#' s0 = c(0.5, 0.5)
-#' idx = which(s[,1]==s0[1] & s[,2]==s0[2])
-#'
-#' p_df = plausibility_contour(s0=s0,s=s[-idx,],Y=Y[-idx])
+#' p_df = plausibility_contour(s0=s0,s=s,Y=Y)
 #' plot(p_df$Y_cand, p_df$p_y, type = "l", lwd = 2, las = 1, xlab = "Y candidates, ylab = "plausibility")
 #' abline(v = Y[idx], col = "red", lty = 2, lwd = 2)
 #' legend("topright", col=1:2, lty=1:2, c("plausibility", "true value"))

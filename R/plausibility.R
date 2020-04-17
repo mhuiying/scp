@@ -32,22 +32,22 @@
 #' @seealso \code{\link{plausibility_contour}}
 #'
 #' @examples
-#' N = 41; n = N^2
-#' S = seq(0,1,length=N)
-#' s = expand.grid(S,S)
-#' d = as.matrix(dist(s))
+#' ## To predict Y(s0), where s0 = c(0.5,0.5), using sample data
+#' ## What's the plausibility if Y(s0) = 0? Y(s0) = 1.5?
 #'
-#' theta        = c(0,3,0.1,0.7)
-#' names(theta) = c("Nugget","PartialSill","Range","Smoothness")
+#' ?sample_data
+#' s0 = c(0.5,0.5)
+#' s  = sample_data$s
+#' Y  = sample_data$Y
 #'
-#' C = mat_cov(d,theta)
-#' X = t(chol(C))%*%rnorm(n)
-#' Y = X^3 + rnorm(n)
+#' # plausibility for Y(s0) = 0: 0.8744795
+#' plausibility(Y0=0,s0=s0,s=s,Y=Y)
 #'
-#' s0 = c(0.5, 0.5)
-#' idx = which(s[,1]==s0[1] & s[,2]==s0[2])
+#' # plausibility for Y(s0) = 1.5: 0.4669839
+#' plausibility(Y0=1.5,s0=s0,s=s,Y=Y)
 #'
-#' plausibility(Y0=seq(0,1,0.1),s0=s0,s=s[-idx,],Y=Y[-idx])
+#' # plausibility for a sequence of Y0's
+#' plausibility(Y0=seq(0,1,0.1),s0=s0,s=s,Y=Y)
 #'
 plausibility = function(Y0,s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred,
                         dfun=c("residual2","abs_residual","std_residual2","std_abs_residual")){

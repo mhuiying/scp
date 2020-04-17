@@ -15,7 +15,8 @@
 #' @examples
 .prime = function(s0,s,Y,global,eta,m,dfun){
 
-  .eliminate_duplicates(s0,s,Y)
+  idx = which(s[,1]==s0[1] & s[,2]==s0[2])
+  if(length(idx) > 0){s = s[-idx,]; Y = Y[-idx]}
 
   these = .deter_these(s0,s,Y,global,eta,m)
   s_aug = rbind(s0, s[these,])
@@ -41,12 +42,18 @@
 
 }
 
-.eliminate_duplicates = function(s0,s,Y){
-  idx = which(s[,1]==s0[1] & s[,2]==s0[2])
-  if(length(idx) > 0){s <<- s[-idx,]; Y <<- Y[-idx]}
-}
-
 .deter_these = function(s0,s,Y,global,eta,m){
+
+  if( eta <= 0 )
+    stop("Please provide a positive eta")
+  else if( eta < Inf )
+    global = FALSE
+
+  if( !is.null(m) )
+    if( (m <= 0 | m%%1!=0) )
+      stop("Please provide a positive integer for m")
+    else if( m < length(Y) )
+      global = FALSE
 
   if(global){ # GSCP
 
@@ -65,6 +72,12 @@
     }
 
   }
+
+  if( !is.null(m) )
+    if( m < 30)
+      warning('m is smaller than 30. A less localized scp is recommended. Please either increase eta or m.')
+    else if( m > 5000)
+      warning('m is larger than 5000. A more localized scp is recommended. Please either decrease eta or m.')
 
   return(these)
 }

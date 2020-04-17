@@ -55,29 +55,31 @@ This function provides the spatial conformal prediction interval for location \c
  given obserations \code{s} and \code{Y}.
 }
 \examples{
-N = 41; n = N^2
-S = seq(0,1,length=N)
-s = expand.grid(S,S)
-d = as.matrix(dist(s))
+## generate prediction interval for s0 = c(0.5,0.5) using sample data
 
-theta        = c(0,3,0.1,0.7)
-names(theta) = c("Nugget","PartialSill","Range","Smoothness")
-C = mat_cov(d,theta)
-X = t(chol(C))\%*\%rnorm(n)
-Y = X^3 + rnorm(n)
+?sample_data
+s0 = c(0.5,0.5)
+s  = sample_data$s
+Y  = sample_data$Y
 
-s0 = c(0.5, 0.5)
-idx = which(s[,1]==s0[1] & s[,2]==s0[2])
-pred_fun = function(s0,s,Y,alpha=0.05) return(mean(Y))
-PI = scp(s0,s[-idx,],Y[-idx],pred_fun=pred_fun, dfun="abs_residual")
-cat(paste("True value: ", Y[idx], "\n"))
-cat(paste("Prediction Interval: [ ", PI[1], ",", PI[2], "]"))
+# default prediction interval, output -12.81192  12.14449
+scp(s0=s0,s=s,Y=Y)
+
+# user define eta=0.1, where LSCP is considered. output -5.891513  5.072357
+scp(s0=s0,s=s,Y=Y,eta=0.1)
+
+# user define non-conformity measure. output -16.27205  15.12093
+scp(s0=s0,s=s,Y=Y,dfun="abs_residual")
+
+# user define prediction function
+fun = function(s0,s,Y) return(mean(Y)). output -23.65864  26.20081
+scp(s0=s0,s=s,Y=Y,pred_fun=fun)
 }
 \references{
 to be entered
 }
 \seealso{
-\code{\link{plausibility}}
+\code{\link{plausibility}}, \code{\link{plausibility_contour}}
 }
 \author{
 Huiying Mao, \email{hmao@samsi.info}, Brian Reich \email{bjreich@ncsu.edu}

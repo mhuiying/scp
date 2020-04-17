@@ -18,8 +18,8 @@ standard error of \code{Y(s0)} along with the point prediction;
 if \code{FALSE}, \code{Krige_pred} function only returns the point prediction. Defaults to \code{FALSE}.}
 }
 \value{
-The output is a value of point prediction for \code{Y(s0)} if \code{return_sd} is FALSE
-or a \code{list} with the following elements if \code{return_sd} is TRUE.
+The output is a value of point prediction for \code{Y(s0)} if \code{return_sd} is \code{FALSE}
+or a \code{list} with the following elements if \code{return_sd} is \code{TRUE}.
    \item{yhat }{point prediction for \code{Y(s0)}}
    \item{sd }{standard error for \code{Y(s0)}}
 }
@@ -42,5 +42,5 @@ Y = X^3 + rnorm(n)
 
 s0 = c(0.5, 0.5)
 krige_pred(s0,s,Y)
-krige_pred(s0,s,Y,interval=TRUE)
+krige_pred(s0,s,Y,return_sd=TRUE)
 }
