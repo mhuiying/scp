@@ -1,29 +1,64 @@
-#' plausibility_contour calculation
+#' generate plausibility contour
 #'
-#' @param Y_cand
-#' @param s0
-#' @param s
-#' @param Y
-#' @param global
-#' @param eta
-#' @param m
-#' @param pred_fun
-#' @param dfun
+#' @description This function provides the plausibility contour for \code{Y(s0)},
+#' given observations \code{s} and \code{Y},
+#' using spatial conformal prediction algorithms.
 #'
-#' @return
+#' @param s0 prediction location, a numeric vector with \code{length = 2}.
+#' @param s an \eqn{n \times 2}{n x 2} \code{matrix} or \code{data.frame} with two coordinates of \eqn{n} locations.
+#' @param Y a vector with \eqn{n} values corresponding to \code{Y(s)}.
+#' @param global logical; if \code{TRUE} , \code{scp} function returns the result of global spatial conformal prediction (GSCP);
+#' if \code{FALSE}, \code{scp} function returns the result of local spatial conformal prediction (LSCP) and users need to
+#' specify \code{eta < Inf} or \code{m} \eqn{\leq} \code{n}. Defaults to \code{TRUE}.
+#' @param eta kernel bandwidth for weight schema, a positve scalar with smaller value meaning more localized procedure.
+#' Defauls to \code{Inf}, which puts equal weight on surrounding \code{m} points.
+#' @param m an postive integer representing the number of nearest locations to use for prediction.
+#' Default to \code{NULL}. If \code{global = TRUE}, \code{m = n};
+#' if \code{global = FALSE} and \code{m} is not specified, \code{m} would be determined by \code{eta}.
+#' @param pred_fun spatial prediction function with inputs being \code{s0, s, Y} and ouputs being predicted \code{Y(s0)}
+#' (and its standard error). Defaults to \code{\link{krige_pred}}.
+#' @param dfun non-conformity measure with four options.
+#'             In which, \code{"residual2"} (default) represents squared residual,
+#'             \code{"std_residual2"} represents standardized squared residual,
+#'             \code{"abs_residual"} represents absolute residual,
+#'             and \code{"std_abs_residual"} represents standardized absolute residual.
+#' @param precision a positive scalar represents how dense \code{Y(s)} candidates (\code{Y_cand}) are. Defaults to \code{NULL}.
+#'
+#' @return The output is a \code{data.frame} of \code{Y_cand} and corresponding plausibility values
 #' @export
 #'
+#' @author Huiying Mao, \email{hmao@@samsi.info}, Brian Reich \email{bjreich@@ncsu.edu}
+#' @references to be entered
+#' @seealso \code{\link{plausibility}}
+#'
 #' @examples
-plausibility_contour = function(Y_cand=NULL,s0,s,Y,global,eta,m,pred_fun,dfun){
-
-  T_dfun = trans_dfun(dfun)
-
-  if(is.null(Y_cand))
-    if( !identical(pred_fun, krige_pred) | !T_dfun$residual2 )
-      Y_cand = seq(min(Y),max(Y),length.out = 100)
-
-  sYw_aug = .hyper(s0,s,Y,global,eta,m)
-  return(.plausibility_contour(Y_cand,sYw_aug,pred_fun,T_dfun))
+#' N = 41; n = N^2
+#' S = seq(0,1,length=N)
+#' s = expand.grid(S,S)
+#' d = as.matrix(dist(s))
+#'
+#' theta        = c(0,3,0.1,0.7)
+#' names(theta) = c("Nugget","PartialSill","Range","Smoothness")
+#'
+#' C = mat_cov(d,theta)
+#' X = t(chol(C))%*%rnorm(n)
+#' Y = X^3 + rnorm(n)
+#'
+#' s0 = c(0.5, 0.5)
+#' idx = which(s[,1]==s0[1] & s[,2]==s0[2])
+#'
+#' p_df = plausibility_contour(s0=s0,s=s[-idx,],Y=Y[-idx])
+#' plot(p_df$Y_cand, p_df$p_y, type = "l", lwd = 2, las = 1, xlab = "Y candidates, ylab = "plausibility")
+#' abline(v = Y[idx], col = "red", lty = 2, lwd = 2)
+#' legend("topright", col=1:2, lty=1:2, c("plausibility", "true value"))
+#'
+plausibility_contour = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred,
+                                dfun=c("residual2","abs_residual","std_residual2","std_abs_residual"),
+                                precision=NULL){
+  dfun = match.arg(dfun)
+  .prime(s0,s,Y,global,eta,m,dfun)
+  Y_cand = .generate_Y_cand(pred_fun, dfun, precision)
+  return(.plausibility_contour(Y_cand,s_aug,Y_aug,w_aug,d_aug,pred_fun,T_dfun))
 
 }
 
@@ -39,12 +74,8 @@ plausibility_contour = function(Y_cand=NULL,s0,s,Y,global,eta,m,pred_fun,dfun){
 #' @keywords internal
 #'
 #' @examples
-.plausibility_contour = function(Y_cand,sYw_aug,pred_fun,T_dfun){
+.plausibility_contour = function(Y_cand,s_aug,Y_aug,w_aug,d_aug,pred_fun,T_dfun){
 
-  s_aug = sYw_aug$s_aug
-  Y_aug = sYw_aug$Y_aug
-  w_aug = sYw_aug$w_aug
-  d_aug = as.matrix(dist(s_aug))
   dfun = T_dfun$fun
 
   if(identical(pred_fun, krige_pred)){
@@ -57,7 +88,7 @@ plausibility_contour = function(Y_cand=NULL,s0,s,Y,global,eta,m,pred_fun,dfun){
     else
       p_df = .Q_plausibility_contour(Q,Y_cand,Y_aug,w_aug,pred_fun,T_dfun)
   }else{
-    n    = length(Y_aug)
+    n = length(Y_aug)
     p_y = c()
     for(y in Y_cand){
       Y_aug[1] = y
@@ -93,7 +124,8 @@ plausibility_contour = function(Y_cand=NULL,s0,s,Y,global,eta,m,pred_fun,dfun){
 #'
 #' @return A vector of lower and upper bounds of the conformal prediction interval.
 #' @export
-
+#' @keywords internal
+#'
 .fast_plausibility_contour = function(Y_aug,w_aug,Q,std=TRUE){
 
   if(std)
@@ -128,6 +160,7 @@ plausibility_contour = function(Y_cand=NULL,s0,s,Y,global,eta,m,pred_fun,dfun){
 #'
 #' @return
 #' @export
+#' @keywords internal
 #'
 #' @examples
 .Q_plausibility_contour = function(Q,Y_cand,Y_aug,w_aug,pred_fun,T_dfun){

@@ -1,12 +1,12 @@
-context("testing the .plausibility_contour functionality")
+context("testing the plausibility_contour functionality")
 
-test_that("Whether .plausibility_contour gives the right output", {
+test_that("Whether plausibility_contour gives the right output", {
 
   source("tests/testthat/setup.R")
 
   # situation 1
   # kriging + residual2
-  p_df1 = plausibility_contour(s0=s0,s=s[-idx,],Y=Y[-idx],global=FALSE,eta=Inf,m=NULL,pred_fun=krige_pred,dfun="residual2")
+  p_df1 = plausibility_contour(s0=s0,s=s[-idx,],Y=Y[-idx])
   expect_equal(p_df1[c(1,nrow(p_df1)),],
                structure(list(Y_cand = c(-58.9977770941897, 47.779809781105),
                               p_y = c(0.00826446280991736, 0)), row.names = c(1L, 240L), class = "data.frame"))
@@ -25,4 +25,25 @@ test_that("Whether .plausibility_contour gives the right output", {
                structure(list(Y_cand = c(-22.5475033874506, 60.8456943475876),
                               p_y = c(0.0578512396694215, 0.00826446280991736)),
                          row.names = c(1L, 100L), class = "data.frame"))
+})
+
+
+test_that("Whether .plausibility gives the right output", {
+
+  source("tests/testthat/setup.R")
+
+  # situation 1
+  # kriging + residual2
+  expect_equal(plausibility(Y0=c(0,100),s0=s0,s=s[-idx,],Y=Y[-idx]),
+               c(0.231404958677686, 0))
+
+  # situation 2
+  # kriging + std_residual2
+  expect_equal(plausibility(Y0=0,s0=s0,s=s[-idx,],Y=Y[-idx],global=FALSE,eta=Inf,m=NULL,pred_fun=krige_pred,dfun="std_residual2"),
+               0.231404958677686)
+
+  # situation 3
+  # kriging(Q) + abs_residual
+  expect_equal(plausibility(Y0=c(0,100),s0=s0,s=s[-idx,],Y=Y[-idx],global=FALSE,eta=Inf,m=NULL,pred_fun=krige_pred,dfun="abs_residual"),
+               c(0.371900826446281, 0.00826446280991736))
 })

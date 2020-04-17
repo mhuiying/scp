@@ -2,9 +2,9 @@ Package: scp
 Type: Package
 Title: Spatial Conformal Prediction
 Version: 0.1.0
-Author: Huiying Mao <hmao@samsi.info>, Ryan Martin <rgmarti3@ncsu.edu>, Brian Reich <bjreich@ncsu.edu>
+Author: Huiying Mao <hmao@samsi.info>, Brian Reich <bjreich@ncsu.edu>, Ryan Martin <rgmarti3@ncsu.edu>
 Maintainer: Huiying Mao <hmao@samsi.info>
-Description: Provide robust, valid and model-free spatial prediction intervals 
+Description: Provide robust, valid, and model-free spatial prediction intervals 
     using Spatial Conformal Prediction (SCP) algorithms
 License: GPL-3
 Encoding: UTF-8

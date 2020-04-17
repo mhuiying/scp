@@ -28,3 +28,4 @@ for spatial location \code{s0} given partial obserations \code{s1,...,sm, Y1,..,
 when the square of the standard kriging residuals are used as the non-conformality measures,
 and weights are provided.
 }
+\keyword{internal}

@@ -15,3 +15,4 @@
 \description{
 Need inverse covariance matrix to calculate plausibility_contour
 }
+\keyword{internal}

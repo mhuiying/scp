@@ -2,48 +2,57 @@
 % Please edit documentation in R/scp.R
 \name{scp}
 \alias{scp}
-\title{Spatial Conformal Prediction (SCP) At a Single Input Location}
+\title{Spatial conformal prediction at a single input location}
 \usage{
 scp(
   s0,
   s,
   Y,
-  global = FALSE,
+  global = TRUE,
   eta = Inf,
   m = NULL,
   pred_fun = krige_pred,
-  alpha = 0.05,
-  dfun = "std_residual2",
-  precision = NULL
+  dfun = c("residual2", "abs_residual", "std_residual2", "std_abs_residual"),
+  precision = NULL,
+  alpha = 0.05
 )
 }
 \arguments{
-\item{s0}{prediction location}
+\item{s0}{prediction location, a numeric vector with \code{length = 2}.}
 
-\item{s}{an \eqn{n \times d}{n x d} matrix or data-frame with \eqn{d} coordinates of the \eqn{n} data locations.}
+\item{s}{an \eqn{n \times 2}{n x 2} \code{matrix} or \code{data.frame} with two coordinates of \eqn{n} locations.}
 
-\item{Y}{a vector with \eqn{n} data values.}
+\item{Y}{a vector with \eqn{n} values corresponding to \code{Y(s)}.}
 
-\item{global}{logical; if TRUE , \code{scp} function returns the result of global spatial conformal prediction \code{\link{gscp}};
-if FALSE, \code{scp} function returns the result of local spatial conformal prediction \code{\link{lscp}}.}
+\item{global}{logical; if \code{TRUE} , \code{scp} function returns the result of global spatial conformal prediction (GSCP);
+if \code{FALSE}, \code{scp} function returns the result of local spatial conformal prediction (LSCP)
+and users need to specify \code{eta}. Defaults to \code{TRUE}.}
 
-\item{eta}{numerical value of the kernel bandwidth for the weight schema in conformal prediction. Defauls to \eqn{Inf} meaning equal weight on surrounding \eqn{m} points.}
+\item{eta}{kernel bandwidth for weight schema, a positve scalar with smaller value meaning more localized procedure.
+Defauls to \code{Inf}, which puts equal weight on surrounding \eqn{m} points.}
 
-\item{m}{an postive integer representing the number of nearest locations used for prediction. Depends on eta.}
+\item{m}{an postive integer representing the number of nearest locations to use for prediction.
+Default depands on \code{eta}.}
 
-\item{pred_fun}{spatial point prediction function}
+\item{pred_fun}{spatial prediction function with inputs being \eqn{s0, s, Y} and ouputs being predicted \code{Y(s0)}
+(and its standard error). Defaults to \code{\link{krige_pred}} representing Kriging prediction.}
+
+\item{dfun}{non-conformity measure with four options.
+In which, \code{"residual2"} (default) represents squared residual,
+\code{"std_residual2"} represents standardized squared residual,
+\code{"abs_residual"} represents absolute residual,
+and \code{"std_abs_residual"} represents standardized absolute residual.}
+
+\item{precision}{a positive scalar represents how dense the candidates for \code{Y(s)} are. Defaults to \code{NULL}.}
 
 \item{alpha}{significance level. Defaults to 0.05.}
-
-\item{dfun}{non-conformity measure}
-
-\item{precision}{Defaults to 0.01.}
 }
 \value{
-A vector of lower and upper bounds of the conformal prediction interval.
+The output is a vector of lower and upper bounds of the conformal prediction interval.
 }
 \description{
-This function provides the conformal prediction interval for spatial location \code{s0} given obserations \code{s, Y}.
+This function provides the spatial conformal prediction interval for location \code{s0},
+ given obserations \code{s} and \code{Y}.
 }
 \examples{
 N = 41; n = N^2
@@ -63,4 +72,13 @@ pred_fun = function(s0,s,Y,alpha=0.05) return(mean(Y))
 PI = scp(s0,s[-idx,],Y[-idx],pred_fun=pred_fun, dfun="abs_residual")
 cat(paste("True value: ", Y[idx], "\n"))
 cat(paste("Prediction Interval: [ ", PI[1], ",", PI[2], "]"))
+}
+\references{
+to be entered
+}
+\seealso{
+\code{\link{plausibility}}
+}
+\author{
+Huiying Mao, \email{hmao@samsi.info}, Brian Reich \email{bjreich@ncsu.edu}
 }

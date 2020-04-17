@@ -2,43 +2,31 @@
 % Please edit documentation in R/krige_pred.R
 \name{krige_pred}
 \alias{krige_pred}
-\title{Kriging Prediction Function}
+\title{Kriging prediction function}
 \usage{
-krige_pred(
-  s0,
-  s,
-  Y,
-  alpha = 0.05,
-  thetaHat = NULL,
-  Q = NULL,
-  interval = FALSE,
-  return_sd = FALSE
-)
+krige_pred(s0, s, Y, return_sd = FALSE)
 }
 \arguments{
-\item{s0}{prediction location}
+\item{s0}{prediction location, a numeric vector with \code{length = 2}.}
 
-\item{s}{an \eqn{n \times d}{n x d} matrix or data-frame with \eqn{d} coordinates of the \eqn{n} data locations.}
+\item{s}{an \eqn{n \times 2}{n x 2} \code{matrix} or \code{data.frame} with two coordinates of \eqn{n} locations.}
 
-\item{Y}{a vector with \eqn{n} data values.}
+\item{Y}{a vector with \eqn{n} values corresponding to \code{Y(s)}.}
 
-\item{alpha}{significance level. Defaults to 0.05.}
-
-\item{thetaHat}{spatial covariance parameters as in \code{\link{mat_cov}}.
-If not given, emperical variogram is used to estimate \code{thetaHat}.}
-
-\item{interval}{logical; if TRUE, \code{Krige_pred} function returns prediction interval;
-if FALSE, \code{Krige_pred} function returns point prediction interval. Defaults to FALSE.}
-
-\item{return_sd}{logical; if TRUE, \code{Krige_pred} function returns
-standard deviation along with the point prediction. Defaults to FALSE.}
+\item{return_sd}{logical. if \code{TRUE}, \code{Krige_pred} function returns the
+standard error of \code{Y(s0)} along with the point prediction;
+if \code{FALSE}, \code{Krige_pred} function only returns the point prediction. Defaults to \code{FALSE}.}
 }
 \value{
-a value of point prediction if \code{interval} is FALSE
-or a vector of lower and upper bounds of the Kriging prediction intervalif \eqn{interval} is TRUE.
+The output is a value of point prediction for \code{Y(s0)} if \code{return_sd} is FALSE
+or a \code{list} with the following elements if \code{return_sd} is TRUE.
+   \item{yhat }{point prediction for \code{Y(s0)}}
+   \item{sd }{standard error for \code{Y(s0)}}
 }
 \description{
-Kriging Prediction Function
+This function provides an example for \code{pred_fun} in \code{\link{scp}},
+\code{\link{plausibility}}, and \code{\link{plausibility_contour}}, which provides a point prediction
+for location \code{s0} (and corresponding standard error), given obserations \code{s} and \code{Y}.
 }
 \examples{
 N = 21; n = N^2

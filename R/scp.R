@@ -1,21 +1,34 @@
-#' Spatial Conformal Prediction (SCP) At a Single Input Location
+#' Spatial conformal prediction at a single input location
 #'
-#' @description This function provides the conformal prediction interval for spatial location \code{s0} given obserations \code{s, Y}.
+#' @description This function provides the spatial conformal prediction interval for location \code{s0},
+#'  given obserations \code{s} and \code{Y}.
 #'
-#' @param s0 prediction location
-#' @param s an \eqn{n \times d}{n x d} matrix or data-frame with \eqn{d} coordinates of the \eqn{n} data locations.
-#' @param Y a vector with \eqn{n} data values.
-#' @param global logical; if TRUE , \code{scp} function returns the result of global spatial conformal prediction \code{\link{gscp}};
-#' if FALSE, \code{scp} function returns the result of local spatial conformal prediction \code{\link{lscp}}.
-#' @param eta numerical value of the kernel bandwidth for the weight schema in conformal prediction. Defauls to \eqn{Inf} meaning equal weight on surrounding \eqn{m} points.
-#' @param m an postive integer representing the number of nearest locations used for prediction. Depends on eta.
-#' @param pred_fun spatial point prediction function
+#' @param s0 prediction location, a numeric vector with \code{length = 2}.
+#' @param s an \eqn{n \times 2}{n x 2} \code{matrix} or \code{data.frame} with two coordinates of \eqn{n} locations.
+#' @param Y a vector with \eqn{n} values corresponding to \code{Y(s)}.
+#' @param global logical; if \code{TRUE} , \code{scp} function returns the result of global spatial conformal prediction (GSCP);
+#' if \code{FALSE}, \code{scp} function returns the result of local spatial conformal prediction (LSCP)
+#' and users need to specify \code{eta}. Defaults to \code{TRUE}.
+#' @param eta kernel bandwidth for weight schema, a positve scalar with smaller value meaning more localized procedure.
+#' Defauls to \code{Inf}, which puts equal weight on surrounding \eqn{m} points.
+#' @param m an postive integer representing the number of nearest locations to use for prediction.
+#' Default depands on \code{eta}.
+#' @param pred_fun spatial prediction function with inputs being \eqn{s0, s, Y} and ouputs being predicted \code{Y(s0)}
+#' (and its standard error). Defaults to \code{\link{krige_pred}} representing Kriging prediction.
+#' @param dfun non-conformity measure with four options.
+#'             In which, \code{"residual2"} (default) represents squared residual,
+#'             \code{"std_residual2"} represents standardized squared residual,
+#'             \code{"abs_residual"} represents absolute residual,
+#'             and \code{"std_abs_residual"} represents standardized absolute residual.
+#' @param precision a positive scalar represents how dense the candidates for \code{Y(s)} are. Defaults to \code{NULL}.
 #' @param alpha significance level. Defaults to 0.05.
-#' @param dfun non-conformity measure
-#' @param precision Defaults to 0.01.
 #'
-#' @return A vector of lower and upper bounds of the conformal prediction interval.
+#' @return The output is a vector of lower and upper bounds of the conformal prediction interval.
 #' @export
+#'
+#' @author Huiying Mao, \email{hmao@@samsi.info}, Brian Reich \email{bjreich@@ncsu.edu}
+#' @references to be entered
+#' @seealso \code{\link{plausibility}}
 #'
 #' @examples
 #' N = 41; n = N^2
@@ -36,27 +49,19 @@
 #' cat(paste("True value: ", Y[idx], "\n"))
 #' cat(paste("Prediction Interval: [ ", PI[1], ",", PI[2], "]"))
 
-scp = function(s0,s,Y,global=FALSE,eta=Inf,m=NULL,pred_fun=krige_pred,alpha=0.05,
-               dfun = "std_residual2",precision=NULL){
+scp = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred,
+               dfun=c("residual2","abs_residual","std_residual2","std_abs_residual"),
+               precision=NULL,alpha=0.05){
 
-  idx = which(s[,1]==s0[1] & s[,2]==s0[2])
-  if(length(idx) > 0){s = s[-idx,]; Y = Y[-idx]}
+  dfun = match.arg(dfun)
+  .prime(s0,s,Y,global,eta,m,dfun)
+  Y_cand = .generate_Y_cand(pred_fun, dfun, precision)
 
-  if(!global){
-    dist = sqrt( (s0[1]-s[,1])^2 + (s0[2]-s[,2])^2 )
-    these = (dist < 2*eta)
-    dist_mat = apply(s[these,], 1, FUN = function(s0) sqrt( (s0[1]-s[,1])^2 + (s0[2]-s[,2])^2 ) )
-    these = apply(dist_mat, 2, FUN = function(x) order(x)[1:15])
-    these = unique(as.vector(these))
-    if(is.null(m)) m = length(these)
-  } else{
-    m = length(Y)
-    these = 1:m
-  }
+  p_df   = .plausibility_contour(Y_cand,s_aug,Y_aug,w_aug,d_aug,pred_fun,T_dfun)
+  Y_cand = p_df$Y_cand
+  p_y    = p_df$p_y
 
-  p_y = plausibity(s0, s[these,], Y[these], eta, m)
-
-  gamma = range(Y_cand[which(p_y >= floor((m+1) * alpha) / (m+1))])
+  gamma = range(Y_cand[which(p_y >= floor((M+1) * alpha) / (M+1))])
   return(gamma)
 
 }
