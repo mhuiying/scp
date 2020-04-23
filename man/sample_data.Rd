@@ -18,4 +18,4 @@ A list containing locations, \code{s},
 and corresponding observations, \code{Y}, to demostrating \code{\link{scp}},
 \code{\link{plausibility}}, and \code{\link{plausibility_contour}} usage
 }
-\keyword{datasets}
+\keyword{internal}

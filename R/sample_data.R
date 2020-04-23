@@ -10,4 +10,6 @@
 #' \item{Y}{a vector with \eqn{Y(s)} observations corresponding to \code{s}, where \eqn{Y(s) = X(s)^3 + E(s)},
 #' \eqn{X(s)} is a stationary Gaussian process process with a Matern covariance, and \eqn{E(s)} is a white noise process.}
 #' }
+#'
+#' @keywords internal
 "sample_data"
