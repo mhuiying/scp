@@ -4,7 +4,7 @@
 \alias{get_theta}
 \title{Estimate theta via variogram fitting}
 \usage{
-get_theta(s, Y, dists = NULL, plot_fitted = FALSE)
+get_theta(s, Y, dists = NULL)
 }
 \arguments{
 \item{s}{spatial location}

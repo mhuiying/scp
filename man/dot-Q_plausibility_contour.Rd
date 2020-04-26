@@ -7,7 +7,18 @@
 .Q_plausibility_contour(Q, Y_cand, Y_aug, w_aug, pred_fun, T_dfun)
 }
 \arguments{
-\item{std}{}
+\item{Q}{an \eqn{n+1 \times n+1} inverse of estimated covariance matrix.}
+
+\item{Y_cand}{a vector of candidate Y values.}
+
+\item{Y_aug}{augmented Y values, as an output of \code{\link{.prime}}.}
+
+\item{w_aug}{augmented weights, as an output of \code{\link{.prime}}.}
+
+\item{pred_fun}{spatial prediction function with inputs being \code{s0, s, Y} and ouputs being predicted \code{Y(s0)}
+(and its standard error). Defaults to \code{\link{krige_pred}}.}
+
+\item{T_dfun}{transformed \code{dfun}, as an output of \code{\link{trans_dfun}}.}
 }
 \value{
 

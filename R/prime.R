@@ -1,18 +1,26 @@
-#' Transform the hyperparameters
+#' Transform the input parameters
 #'
-#' @param s0
-#' @param s
-#' @param Y
-#' @param global
-#' @param eta
-#' @param m
-#' @param dfun
+#' @description An internal function to transform the input parameters
 #'
-#' @return
+#' @param s0 prediction location, a numeric vector with \code{length = 2}.
+#' @param s an \eqn{n \times 2}{n x 2} \code{matrix} or \code{data.frame} with two coordinates of \eqn{n} locations.
+#' @param Y a vector with \eqn{n} values corresponding to \code{Y(s)}.
+#' @param global logical; if \code{TRUE} , \code{scp} function returns the result of global spatial conformal prediction (GSCP);
+#' if \code{FALSE}, \code{scp} function returns the result of local spatial conformal prediction (LSCP)
+#' and users need to specify \code{eta}. Defaults to \code{TRUE}.
+#' @param eta kernel bandwidth for weight schema, a positve scalar with smaller value meaning more localized procedure.
+#' Defauls to \code{Inf}, which puts equal weight on surrounding \eqn{m} points.
+#' @param m an postive integer representing the number of nearest locations to use for prediction.
+#' Default depands on \code{eta}.
+#' @param dfun non-conformity measure with four options.
+#'             In which, \code{"residual2"} (default) represents squared residual,
+#'             \code{"std_residual2"} represents standardized squared residual,
+#'             \code{"abs_residual"} represents absolute residual,
+#'             and \code{"std_abs_residual"} represents standardized absolute residual.
+#'
 #' @export
 #' @keywords internal
-#'
-#' @examples
+
 .prime = function(s0,s,Y,global,eta,m,dfun){
 
   idx = which(s[,1]==s0[1] & s[,2]==s0[2])
@@ -27,7 +35,7 @@
   if(eta==Inf){
     w = rep(1/(M+1),M+1)
   }else{
-    w = d[1,-1]/eta
+    w = d_aug[1,-1]/eta
     w = c(1, exp(-0.5*w^2))
     w = w/sum(w)
   }
@@ -89,8 +97,7 @@
 #' @return
 #' @export
 #' @keywords internal
-#'
-#' @examples
+
 trans_dfun = function(dfun){
 
   if(dfun == "std_residual2"){

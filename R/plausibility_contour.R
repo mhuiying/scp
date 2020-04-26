@@ -9,7 +9,7 @@
 #' @param Y a vector with \eqn{n} values corresponding to \code{Y(s)}.
 #' @param global logical; if \code{TRUE} , \code{scp} function returns the result of global spatial conformal prediction (GSCP);
 #' if \code{FALSE}, \code{scp} function returns the result of local spatial conformal prediction (LSCP) and users need to
-#' specify \code{eta < Inf} or \code{m} \eqn{\leq} \code{n}. Defaults to \code{TRUE}.
+#' specify \code{eta < Inf} or \code{m} \eqn{\le} \code{n}. Defaults to \code{TRUE}.
 #' @param eta kernel bandwidth for weight schema, a positve scalar with smaller value meaning more localized procedure.
 #' Defauls to \code{Inf}, which puts equal weight on surrounding \code{m} points.
 #' @param m an postive integer representing the number of nearest locations to use for prediction.
@@ -24,7 +24,7 @@
 #'             and \code{"std_abs_residual"} represents standardized absolute residual.
 #' @param precision a positive scalar represents how dense \code{Y(s)} candidates (\code{Y_cand}) are. Defaults to \code{NULL}.
 #'
-#' @return The output is a \code{data.frame} of \code{Y_cand} and corresponding plausibility values
+#' @return The output is a \code{data.frame} of \code{Y_cand} and corresponding plausibility values.
 #' @export
 #'
 #' @author Huiying Mao, \email{hmao@@samsi.info}, Brian Reich \email{bjreich@@ncsu.edu}
@@ -34,13 +34,15 @@
 #' @examples
 #' ## generate plausibility contour for Y(s0), where s0 = c(0.5,0.5), using sample data
 #'
-#' ?sample_data
+#' #?sample_data
 #' s0 = c(0.5,0.5)
 #' s  = sample_data$s
 #' Y  = sample_data$Y
 #'
 #' p_df = plausibility_contour(s0=s0,s=s,Y=Y)
-#' plot(p_df$Y_cand, p_df$p_y, type = "l", lwd = 2, las = 1, xlab = "Y candidates, ylab = "plausibility")
+#' plot(p_df$Y_cand, p_df$p_y, type = "l", lwd = 2, las = 1, xlab = "Y candidates", ylab = "plausibility")
+#'
+#' idx = which(s[, 1] == s0[1] & s[, 2] == s0[2])
 #' abline(v = Y[idx], col = "red", lty = 2, lwd = 2)
 #' legend("topright", col=1:2, lty=1:2, c("plausibility", "true value"))
 #'
@@ -56,16 +58,18 @@ plausibility_contour = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige
 
 #' internal plausibility_contour calculation function
 #'
-#' @param Y_cand
-#' @param sYw_aug
-#' @param pred_fun
-#' @param T_dfun
+#' @param Y_cand a vector of candidate Y values.
+#' @param s_aug augmented locations, as an output of \code{\link{.prime}}.
+#' @param Y_aug augmented Y values, as an output of \code{\link{.prime}}.
+#' @param w_aug augmented weights, as an output of \code{\link{.prime}}.
+#' @param pred_fun spatial prediction function with inputs being \code{s0, s, Y} and ouputs being predicted \code{Y(s0)}
+#' (and its standard error). Defaults to \code{\link{krige_pred}}.
+#' @param T_dfun transformed \code{dfun}, as an output of \code{\link{trans_dfun}}.
 #'
-#' @return a data frame of Y_cand and p_y
+#' @return a data frame of Y_cand and p_y.
 #' @export
 #' @keywords internal
-#'
-#' @examples
+
 .plausibility_contour = function(Y_cand,s_aug,Y_aug,w_aug,d_aug,pred_fun,T_dfun){
 
   dfun = T_dfun$fun
@@ -145,16 +149,18 @@ plausibility_contour = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige
 
 #' Need inverse covariance matrix to calculate plausibility_contour
 #'
-#' @param Y_aug
-#' @param w_aug
-#' @param Q
-#' @param std
+#' @param Y_aug augmented Y values, as an output of \code{\link{.prime}}.
+#' @param Y_cand a vector of candidate Y values.
+#' @param Q an \eqn{n+1 \times n+1} inverse of estimated covariance matrix.
+#' @param Y_aug augmented Y values, as an output of \code{\link{.prime}}.
+#' @param w_aug augmented weights, as an output of \code{\link{.prime}}.
+#' @param pred_fun spatial prediction function with inputs being \code{s0, s, Y} and ouputs being predicted \code{Y(s0)}
+#' (and its standard error). Defaults to \code{\link{krige_pred}}.
+#' @param T_dfun transformed \code{dfun}, as an output of \code{\link{trans_dfun}}.
 #'
 #' @return
 #' @export
 #' @keywords internal
-#'
-#' @examples
 .Q_plausibility_contour = function(Q,Y_cand,Y_aug,w_aug,pred_fun,T_dfun){
 
   dfun = T_dfun$fun

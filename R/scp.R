@@ -33,22 +33,22 @@
 #' @examples
 #' ## generate prediction interval for s0 = c(0.5,0.5) using sample data
 #'
-#' ?sample_data
+#' #?sample_data
 #' s0 = c(0.5,0.5)
 #' s  = sample_data$s
 #' Y  = sample_data$Y
 #'
-#' # default prediction interval, output -12.81192  12.14449
+#' # default prediction interval, output -12.90153  12.06435
 #' scp(s0=s0,s=s,Y=Y)
 #'
-#' # user define eta=0.1, where LSCP is considered. output -5.891513  5.072357
+#' # user define eta=0.1, where LSCP is considered. output -13.87343  10.93980
 #' scp(s0=s0,s=s,Y=Y,eta=0.1)
 #'
 #' # user define non-conformity measure. output -16.27205  15.12093
 #' scp(s0=s0,s=s,Y=Y,dfun="abs_residual")
 #'
-#' # user define prediction function
-#' fun = function(s0,s,Y) return(mean(Y)). output -23.65864  26.20081
+#' # user define prediction function. output -23.65864  26.20081
+#' fun = function(s0,s,Y) return(mean(Y))
 #' scp(s0=s0,s=s,Y=Y,pred_fun=fun)
 
 scp = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred,

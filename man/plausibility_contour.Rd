@@ -25,7 +25,7 @@ plausibility_contour(
 
 \item{global}{logical; if \code{TRUE} , \code{scp} function returns the result of global spatial conformal prediction (GSCP);
 if \code{FALSE}, \code{scp} function returns the result of local spatial conformal prediction (LSCP) and users need to
-specify \code{eta < Inf} or \code{m} \eqn{\leq} \code{n}. Defaults to \code{TRUE}.}
+specify \code{eta < Inf} or \code{m} \eqn{\le} \code{n}. Defaults to \code{TRUE}.}
 
 \item{eta}{kernel bandwidth for weight schema, a positve scalar with smaller value meaning more localized procedure.
 Defauls to \code{Inf}, which puts equal weight on surrounding \code{m} points.}
@@ -46,12 +46,28 @@ and \code{"std_abs_residual"} represents standardized absolute residual.}
 \item{precision}{a positive scalar represents how dense \code{Y(s)} candidates (\code{Y_cand}) are. Defaults to \code{NULL}.}
 }
 \value{
-The output is a \code{data.frame} of \code{Y_cand} and corresponding plausibility values
+The output is a \code{data.frame} of \code{Y_cand} and corresponding plausibility values.
 }
 \description{
 This function provides the plausibility contour for \code{Y(s0)},
 given observations \code{s} and \code{Y},
 using spatial conformal prediction algorithms.
+}
+\examples{
+## generate plausibility contour for Y(s0), where s0 = c(0.5,0.5), using sample data
+
+#?sample_data
+s0 = c(0.5,0.5)
+s  = sample_data$s
+Y  = sample_data$Y
+
+p_df = plausibility_contour(s0=s0,s=s,Y=Y)
+plot(p_df$Y_cand, p_df$p_y, type = "l", lwd = 2, las = 1, xlab = "Y candidates", ylab = "plausibility")
+
+idx = which(s[, 1] == s0[1] & s[, 2] == s0[2])
+abline(v = Y[idx], col = "red", lty = 2, lwd = 2)
+legend("topright", col=1:2, lty=1:2, c("plausibility", "true value"))
+
 }
 \references{
 to be entered

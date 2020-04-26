@@ -7,10 +7,21 @@
 .plausibility_contour(Y_cand, s_aug, Y_aug, w_aug, d_aug, pred_fun, T_dfun)
 }
 \arguments{
-\item{T_dfun}{}
+\item{Y_cand}{a vector of candidate Y values.}
+
+\item{s_aug}{augmented locations, as an output of \code{\link{.prime}}.}
+
+\item{Y_aug}{augmented Y values, as an output of \code{\link{.prime}}.}
+
+\item{w_aug}{augmented weights, as an output of \code{\link{.prime}}.}
+
+\item{pred_fun}{spatial prediction function with inputs being \code{s0, s, Y} and ouputs being predicted \code{Y(s0)}
+(and its standard error). Defaults to \code{\link{krige_pred}}.}
+
+\item{T_dfun}{transformed \code{dfun}, as an output of \code{\link{trans_dfun}}.}
 }
 \value{
-a data frame of Y_cand and p_y
+a data frame of Y_cand and p_y.
 }
 \description{
 internal plausibility_contour calculation function

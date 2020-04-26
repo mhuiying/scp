@@ -57,7 +57,7 @@ using spatial conformal prediction algorithms.
 ## To predict Y(s0), where s0 = c(0.5,0.5), using sample data
 ## What's the plausibility if Y(s0) = 0? Y(s0) = 1.5?
 
-?sample_data
+#?sample_data
 s0 = c(0.5,0.5)
 s  = sample_data$s
 Y  = sample_data$Y
