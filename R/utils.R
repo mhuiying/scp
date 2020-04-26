@@ -54,9 +54,9 @@ interval_score = function(l, u, x, alpha = 0.05){
 #' @keywords internal
 #'
 #' @examples
-Krige_int  <- function(Q,Y,i,eps=0.05){
+Krige_int  <- function(Q,Y,i,alpha=0.05){
   yhat  <- as.numeric(-Q[i,-i]%*%Y[-i]/Q[i,i])
-  gamma <- yhat + qnorm(1-eps/2)*c(-1,1)/sqrt(Q[i,i])
+  gamma <- yhat + qnorm(1-alpha/2)*c(-1,1)/sqrt(Q[i,i])
   return(gamma)}
 
 # laGP
@@ -72,8 +72,8 @@ Krige_int  <- function(Q,Y,i,eps=0.05){
 #' @keywords internal
 #'
 #' @examples
-laGP_int <- function(s0,s,Y,eps=0.05){
+laGP_int <- function(s0,s,Y,alpha=0.05){
   library(laGP)
   tmpGP <- laGP(matrix(s0, nrow = 1), 6, 50, s, Y, d = 0.1, method="mspe")
-  gamma <- tmpGP$mean + qnorm(1-eps/2)*c(-1,1)*sqrt(tmpGP$s2)
+  gamma <- tmpGP$mean + qnorm(1-alpha/2)*c(-1,1)*sqrt(tmpGP$s2)
   return(gamma)}

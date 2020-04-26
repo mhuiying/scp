@@ -4,7 +4,7 @@
 \alias{Krige_int}
 \title{Title}
 \usage{
-Krige_int(Q, Y, i, eps = 0.05)
+Krige_int(Q, Y, i, alpha = 0.05)
 }
 \arguments{
 \item{eps}{}

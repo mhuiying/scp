@@ -4,7 +4,7 @@
 \alias{laGP_int}
 \title{Title}
 \usage{
-laGP_int(s0, s, Y, eps = 0.05)
+laGP_int(s0, s, Y, alpha = 0.05)
 }
 \arguments{
 \item{eps}{}
