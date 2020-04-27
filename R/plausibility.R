@@ -18,6 +18,8 @@
 #' if \code{global = FALSE} and \code{m} is not specified, \code{m} would be determined by \code{eta}.
 #' @param pred_fun spatial prediction function with inputs being \code{s0, s, Y} and ouputs being predicted \code{Y(s0)}
 #' (and its standard error). Defaults to \code{\link{krige_pred}}.
+#' @param thetaHat a vector of Matern parameters, representing Nugget, PartialSill, Range, and Smoothness.
+#'             Defaults to NULL. It will be ignored if \code{pred_fun} is not \code{krige_pred}.
 #' @param dfun non-conformity measure with four options.
 #'             In which, \code{"residual2"} (default) represents squared residual,
 #'             \code{"std_residual2"} represents standardized squared residual,
@@ -49,16 +51,16 @@
 #' # plausibility for a sequence of Y0's
 #' plausibility(Y0=seq(0,1,0.1),s0=s0,s=s,Y=Y)
 #'
-plausibility = function(Y0,s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred,
+plausibility = function(Y0,s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred,thetaHat=NULL,
                         dfun=c("residual2","abs_residual","std_residual2","std_abs_residual")){
 
   dfun = match.arg(dfun)
   .prime(s0,s,Y,global,eta,m,dfun)
   if( !identical(pred_fun, krige_pred) | !grepl("residual2", dfun) ){
     Y_cand = Y0
-    return(.plausibility_contour(Y_cand,s_aug,Y_aug,w_aug,d_aug,pred_fun,T_dfun)$p_y)
+    return(.plausibility_contour(Y_cand,s_aug,Y_aug,w_aug,d_aug,pred_fun,thetaHat,T_dfun)$p_y)
   } else {
-    p_df   = .plausibility_contour(Y_cand=NULL,s_aug,Y_aug,w_aug,d_aug,pred_fun,T_dfun)
+    p_df   = .plausibility_contour(Y_cand=NULL,s_aug,Y_aug,w_aug,d_aug,pred_fun,thetaHat,T_dfun)
     Y_cand = p_df$Y_cand
     p_y    = p_df$p_y
 
