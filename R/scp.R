@@ -15,6 +15,8 @@
 #' Default depands on \code{eta}.
 #' @param pred_fun spatial prediction function with inputs being \eqn{s0, s, Y} and ouputs being predicted \code{Y(s0)}
 #' (and its standard error). Defaults to \code{\link{krige_pred}} representing Kriging prediction.
+#' @param thetaHat a vector of Matern parameters, representing Nugget, PartialSill, Range, and Smoothness.
+#'             Defaults to NULL. It will be ignored if \code{pred_fun} is not \code{krige_pred}.
 #' @param dfun non-conformity measure with four options.
 #'             In which, \code{"residual2"} (default) represents squared residual,
 #'             \code{"std_residual2"} represents standardized squared residual,
@@ -51,7 +53,7 @@
 #' fun = function(s0,s,Y) return(mean(Y))
 #' scp(s0=s0,s=s,Y=Y,pred_fun=fun)
 
-scp = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred,theta=NULL,
+scp = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred,thetaHat=NULL,
                dfun=c("residual2","abs_residual","std_residual2","std_abs_residual"),
                precision=NULL,alpha=0.05){
 
@@ -59,7 +61,7 @@ scp = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred,theta=NULL,
   .prime(s0,s,Y,global,eta,m,dfun)
   Y_cand = .generate_Y_cand(pred_fun, dfun, precision)
 
-  p_df   = .plausibility_contour(Y_cand,s_aug,Y_aug,w_aug,d_aug,pred_fun,T_dfun)
+  p_df   = .plausibility_contour(Y_cand,s_aug,Y_aug,w_aug,d_aug,pred_fun,thetaHat,T_dfun)
   Y_cand = p_df$Y_cand
   p_y    = p_df$p_y
 

@@ -89,9 +89,14 @@
     dist = sqrt( (s0[1]-s[,1])^2 + (s0[2]-s[,2])^2 )
     if(is.null(m)){
       these = (dist < 2*eta)
-      dist_mat = apply(s[these,], 1, FUN = function(s0) sqrt( (s0[1]-s[,1])^2 + (s0[2]-s[,2])^2 ) )
-      these = apply(dist_mat, 2, FUN = function(x) order(x)[1:15])
-      these = unique(as.vector(these))
+      if( sum(these) > 5 ){
+        dist_mat = apply(s[these,], 1, FUN = function(s0) sqrt( (s0[1]-s[,1])^2 + (s0[2]-s[,2])^2 ) )
+        these = apply(dist_mat, 2, FUN = function(x) order(x)[1:15])
+        these = unique(as.vector(these))
+      } else {
+        warning(paste("eta is too small. Try eta >", sort(dist)[5]/2))
+        these = order(dist)[1:30]
+      }
     } else {
       these = order(dist)[1:m]
     }

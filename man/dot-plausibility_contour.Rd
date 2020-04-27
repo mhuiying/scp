@@ -4,7 +4,16 @@
 \alias{.plausibility_contour}
 \title{internal plausibility_contour calculation function}
 \usage{
-.plausibility_contour(Y_cand, s_aug, Y_aug, w_aug, d_aug, pred_fun, T_dfun)
+.plausibility_contour(
+  Y_cand,
+  s_aug,
+  Y_aug,
+  w_aug,
+  d_aug,
+  pred_fun,
+  thetaHat,
+  T_dfun
+)
 }
 \arguments{
 \item{Y_cand}{a vector of candidate Y values.}
