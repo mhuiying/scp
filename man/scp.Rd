@@ -62,16 +62,16 @@ s0 = c(0.5,0.5)
 s  = sample_data$s
 Y  = sample_data$Y
 
-# default prediction interval, output -12.90153  12.06435
+# default prediction interval
 scp(s0=s0,s=s,Y=Y)
 
-# user define eta=0.1, where LSCP is considered. output -13.87343  10.93980
+# user define eta=0.1, where LSCP is considered
 scp(s0=s0,s=s,Y=Y,eta=0.1)
 
-# user define non-conformity measure. output -16.27205  15.12093
+# user define non-conformity measure
 scp(s0=s0,s=s,Y=Y,dfun="abs_residual")
 
-# user define prediction function. output -23.65864  26.20081
+# user define prediction function
 fun = function(s0,s,Y) return(mean(Y))
 scp(s0=s0,s=s,Y=Y,pred_fun=fun)
 }
