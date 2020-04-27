@@ -7,7 +7,11 @@
 trans_dfun(dfun)
 }
 \arguments{
-\item{dfun}{}
+\item{dfun}{non-conformity measure with four options.
+In which, \code{"residual2"} (default) represents squared residual,
+\code{"std_residual2"} represents standardized squared residual,
+\code{"abs_residual"} represents absolute residual,
+and \code{"std_abs_residual"} represents standardized absolute residual.}
 }
 \value{
 

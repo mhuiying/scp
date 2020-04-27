@@ -2,7 +2,9 @@
 
 export(.Q_plausibility_contour)
 export(.compute_UVW)
+export(.deter_these)
 export(.fast_plausibility_contour)
+export(.generate_Y_cand)
 export(.plausibility_contour)
 export(.prime)
 export(get_theta)

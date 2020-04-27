@@ -50,6 +50,23 @@
 
 }
 
+#' Determine the surrounding "these" points for prediction
+#'
+#' @param s0 prediction location, a numeric vector with \code{length = 2}.
+#' @param s an \eqn{n \times 2}{n x 2} \code{matrix} or \code{data.frame} with two coordinates of \eqn{n} locations.
+#' @param Y a vector with \eqn{n} values corresponding to \code{Y(s)}.
+#' @param global logical; if \code{TRUE} , \code{scp} function returns the result of global spatial conformal prediction (GSCP);
+#' if \code{FALSE}, \code{scp} function returns the result of local spatial conformal prediction (LSCP)
+#' and users need to specify \code{eta}. Defaults to \code{TRUE}.
+#' @param eta kernel bandwidth for weight schema, a positve scalar with smaller value meaning more localized procedure.
+#' Defauls to \code{Inf}, which puts equal weight on surrounding \eqn{m} points.
+#' @param m an postive integer representing the number of nearest locations to use for prediction.
+#' Default depands on \code{eta}.
+#'
+#' @return a vector of location indexes for prediction
+#' @export
+#'
+#' @keywords internal
 .deter_these = function(s0,s,Y,global,eta,m){
 
   if( eta <= 0 )
@@ -92,7 +109,11 @@
 
 #' Transform non-conformity measure
 #'
-#' @param dfun
+#' @param dfun non-conformity measure with four options.
+#'             In which, \code{"residual2"} (default) represents squared residual,
+#'             \code{"std_residual2"} represents standardized squared residual,
+#'             \code{"abs_residual"} represents absolute residual,
+#'             and \code{"std_abs_residual"} represents standardized absolute residual.
 #'
 #' @return
 #' @export
@@ -119,6 +140,21 @@ trans_dfun = function(dfun){
   return(list(fun = dfun1, std = std, residual2 = grepl("residual2",dfun)))
 }
 
+#' Generate candidate Y values
+#'
+#' @param pred_fun spatial prediction function with inputs being \eqn{s0, s, Y} and ouputs being predicted \code{Y(s0)}
+#' (and its standard error). Defaults to \code{\link{krige_pred}} representing Kriging prediction.
+#' @param dfun non-conformity measure with four options.
+#'             In which, \code{"residual2"} (default) represents squared residual,
+#'             \code{"std_residual2"} represents standardized squared residual,
+#'             \code{"abs_residual"} represents absolute residual,
+#'             and \code{"std_abs_residual"} represents standardized absolute residual.
+#' @param precision a positive scalar represents how dense the candidates for \code{Y(s)} are. Defaults to \code{NULL}.
+#'
+#' @return a vector of candidate Y values
+#' @export
+#'
+#' @keywords internal
 .generate_Y_cand = function(pred_fun, dfun, precision){
 
   if( !identical(pred_fun, krige_pred) | !grepl("residual2", dfun) ){
