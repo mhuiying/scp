@@ -18,8 +18,8 @@ standard error of \code{Y(s0)} along with the point prediction;
 if \code{FALSE}, \code{Krige_pred} function only returns the point prediction. Defaults to \code{FALSE}.}
 }
 \value{
-The output is a value of point prediction for \code{Y(s0)} if \code{return_sd} is \code{FALSE}
-or a \code{list} with the following elements if \code{return_sd} is \code{TRUE}.
+If \code{return_sd} is FALSE (default), the output is a value of point prediction for \code{Y(s0)};
+        If \code{return_sd} is TRUE, the output is a \code{list} with the following elements:
    \item{yhat }{point prediction for \code{Y(s0)}}
    \item{sd }{standard error for \code{Y(s0)}}
 }
@@ -29,18 +29,11 @@ This function provides an example for \code{pred_fun} in \code{\link{scp}},
 for location \code{s0} (and corresponding standard error), given obserations \code{s} and \code{Y}.
 }
 \examples{
-N = 21; n = N^2
-S = seq(0,1,length=N)
-s = expand.grid(S,S)
-d = as.matrix(dist(s))
+#?sample_data
+s0 = c(0.5,0.5)
+s  = sample_data$s
+Y  = sample_data$Y
 
-theta        = c(0,3,0.1,0.7)
-names(theta) = c("Nugget","PartialSill","Range","Smoothness")
-C = mat_cov(d,theta)
-X = t(chol(C))\%*\%rnorm(n)
-Y = X^3 + rnorm(n)
-
-s0 = c(0.5, 0.5)
 krige_pred(s0,s,Y)
 krige_pred(s0,s,Y,return_sd=TRUE)
 }
