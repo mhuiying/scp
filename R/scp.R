@@ -51,7 +51,7 @@
 #' fun = function(s0,s,Y) return(mean(Y))
 #' scp(s0=s0,s=s,Y=Y,pred_fun=fun)
 
-scp = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred,
+scp = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred,theta=NULL,
                dfun=c("residual2","abs_residual","std_residual2","std_abs_residual"),
                precision=NULL,alpha=0.05){
 
