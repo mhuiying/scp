@@ -20,10 +20,8 @@
 #' @param thetaHat a vector of Matern parameters, representing nugget, partial sill, range, and smoothness as in Mao. et al. (2020).
 #'             Defaults to \code{NULL}. It will be ignored if \code{pred_fun} is not \code{krige_pred}.
 #' @param dfun non-conformity measure with four options.
-#'             In which, \code{"residual2"} (default) represents squared residual,
-#'             \code{"std_residual2"} represents standardized squared residual,
-#'             \code{"abs_residual"} represents absolute residual,
-#'             and \code{"std_abs_residual"} represents standardized absolute residual.
+#'             In which, \code{"residual2"} (default) represents squared residual and
+#'             \code{"std_residual2"} represents standardized squared residual.
 #' @param precision a positive scalar represents how dense \code{Y(s)} candidates (\code{Y_cand}) are. Defaults to \code{NULL}.
 #'
 #' @return The output is a \code{data.frame} of \code{Y_cand} and corresponding plausibility values.

@@ -44,10 +44,8 @@ if \code{global = FALSE} and \code{m} is not specified, \code{m} would be determ
 Defaults to \code{NULL}. It will be ignored if \code{pred_fun} is not \code{krige_pred}.}
 
 \item{dfun}{non-conformity measure with four options.
-In which, \code{"residual2"} (default) represents squared residual,
-\code{"std_residual2"} represents standardized squared residual,
-\code{"abs_residual"} represents absolute residual,
-and \code{"std_abs_residual"} represents standardized absolute residual.}
+In which, \code{"residual2"} (default) represents squared residual and
+\code{"std_residual2"} represents standardized squared residual.}
 }
 \value{
 The output is a scalar or a vector with plausibility values for \code{Y0}. The numbers are between 0 and 1.

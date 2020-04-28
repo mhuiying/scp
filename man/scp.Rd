@@ -42,10 +42,8 @@ Default depands on \code{eta}.}
 Defaults to \code{NULL}. It will be ignored if \code{pred_fun} is not \code{krige_pred}.}
 
 \item{dfun}{non-conformity measure with four options.
-In which, \code{"residual2"} (default) represents squared residual,
-\code{"std_residual2"} represents standardized squared residual,
-\code{"abs_residual"} represents absolute residual,
-and \code{"std_abs_residual"} represents standardized absolute residual.}
+In which, \code{"residual2"} (default) represents squared residual and
+\code{"std_residual2"} represents standardized squared residual.}
 
 \item{precision}{a positive scalar represents how dense the candidates for \code{Y(s)} are. Defaults to \code{NULL}.}
 
