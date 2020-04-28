@@ -132,17 +132,9 @@ trans_dfun = function(dfun){
   }else if(dfun == "residual2"){
     dfun1 = function(y,yhat,sd=1) (y-yhat)^2/sd^2
     std = FALSE
-  }else if(dfun == "abs_residual"){
-    dfun1 = function(y,yhat,sd=1) abs(y-yhat)/sd
-    std = FALSE
-  }else if(dfun == "std_abs_residual"){
-    dfun1 = function(y,yhat,sd) abs(y-yhat)/sd
-    std = TRUE
-  }else if(!is.function(dfun)){
-    stop("Please provide a valid non-conformity measure.")
   }
-
   return(list(fun = dfun1, std = std, residual2 = grepl("residual2",dfun)))
+
 }
 
 #' Generate candidate Y values

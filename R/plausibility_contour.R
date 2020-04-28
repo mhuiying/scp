@@ -17,8 +17,8 @@
 #' if \code{global = FALSE} and \code{m} is not specified, \code{m} would be determined by \code{eta}.
 #' @param pred_fun spatial prediction function with inputs being \code{s0, s, Y} and ouputs being predicted \code{Y(s0)}
 #' (and its standard error). Defaults to \code{\link{krige_pred}}.
-#' @param thetaHat a vector of Matern parameters, representing Nugget, PartialSill, Range, and Smoothness.
-#'             Defaults to NULL. It will be ignored if \code{pred_fun} is not \code{krige_pred}.
+#' @param thetaHat a vector of Matern parameters, representing nugget, partial sill, range, and smoothness as in Mao. et al. (2020).
+#'             Defaults to \code{NULL}. It will be ignored if \code{pred_fun} is not \code{krige_pred}.
 #' @param dfun non-conformity measure with four options.
 #'             In which, \code{"residual2"} (default) represents squared residual,
 #'             \code{"std_residual2"} represents standardized squared residual,
@@ -49,8 +49,7 @@
 #' legend("topright", col=1:2, lty=1:2, c("plausibility", "true value"))
 #'
 plausibility_contour = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred,thetaHat=NULL,
-                                dfun=c("residual2","abs_residual","std_residual2","std_abs_residual"),
-                                precision=NULL){
+                                dfun=c("residual2","std_residual2"),precision=NULL){
   dfun = match.arg(dfun)
   .prime(s0,s,Y,global,eta,m,dfun)
   Y_cand = .generate_Y_cand(pred_fun, dfun, precision)
