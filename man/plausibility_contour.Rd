@@ -48,7 +48,7 @@ In which, \code{"residual2"} (default) represents squared residual and
 \item{precision}{a positive scalar represents how dense \code{Y(s)} candidates (\code{Y_cand}) are. Defaults to \code{NULL}.}
 }
 \value{
-The output is a \code{data.frame} of \code{Y_cand} and corresponding plausibility values.
+The output is a "plausibility_contour" object.
 }
 \description{
 This function provides the plausibility contour for \code{Y(s0)},

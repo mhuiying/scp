@@ -24,7 +24,7 @@
 #'             \code{"std_residual2"} represents standardized squared residual.
 #' @param precision a positive scalar represents how dense \code{Y(s)} candidates (\code{Y_cand}) are. Defaults to \code{NULL}.
 #'
-#' @return The output is a \code{data.frame} of \code{Y_cand} and corresponding plausibility values.
+#' @return The output is a "plausibility_contour" object.
 #' @export
 #'
 #' @author Huiying Mao, \email{hmao@@samsi.info}, Brian Reich \email{bjreich@@ncsu.edu}
