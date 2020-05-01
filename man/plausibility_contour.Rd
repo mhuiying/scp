@@ -63,11 +63,11 @@ s0 = c(0.5,0.5)
 s  = sample_data$s
 Y  = sample_data$Y
 
-p_df = plausibility_contour(s0=s0,s=s,Y=Y)
-plot(p_df$Y_cand, p_df$p_y, type = "l", lwd = 2, las = 1, xlab = "Y candidates", ylab = "plausibility")
+pc = plausibility_contour(s0=s0,s=s,Y=Y)
+plot(pc)
 
 idx = which(s[, 1] == s0[1] & s[, 2] == s0[2])
-abline(v = Y[idx], col = "red", lty = 2, lwd = 2)
+abline(v = Y[idx], col = "red", lty = 2)
 legend("topright", col=1:2, lty=1:2, c("plausibility", "true value"))
 
 }

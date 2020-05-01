@@ -64,10 +64,10 @@ s0 = c(0.5,0.5)
 s  = sample_data$s
 Y  = sample_data$Y
 
-# plausibility for Y(s0) = 0: 0.8744795
+# plausibility for Y(s0) = 0
 plausibility(Y0=0,s0=s0,s=s,Y=Y)
 
-# plausibility for Y(s0) = 1.5: 0.4669839
+# plausibility for Y(s0) = 1.5
 plausibility(Y0=1.5,s0=s0,s=s,Y=Y)
 
 # plausibility for a sequence of Y0's

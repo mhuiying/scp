@@ -39,11 +39,11 @@
 #' s  = sample_data$s
 #' Y  = sample_data$Y
 #'
-#' p_df = plausibility_contour(s0=s0,s=s,Y=Y)
-#' plot(p_df$Y_cand, p_df$p_y, type = "l", lwd = 2, las = 1, xlab = "Y candidates", ylab = "plausibility")
+#' pc = plausibility_contour(s0=s0,s=s,Y=Y)
+#' plot(pc)
 #'
 #' idx = which(s[, 1] == s0[1] & s[, 2] == s0[2])
-#' abline(v = Y[idx], col = "red", lty = 2, lwd = 2)
+#' abline(v = Y[idx], col = "red", lty = 2)
 #' legend("topright", col=1:2, lty=1:2, c("plausibility", "true value"))
 #'
 plausibility_contour = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred,thetaHat=NULL,
@@ -51,7 +51,9 @@ plausibility_contour = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige
   dfun = match.arg(dfun)
   .prime(s0,s,Y,global,eta,m,dfun)
   Y_cand = .generate_Y_cand(pred_fun, dfun, precision)
-  return(.plausibility_contour(Y_cand,s_aug,Y_aug,w_aug,d_aug,pred_fun,thetaHat,T_dfun))
+  p_df = .plausibility_contour(Y_cand,s_aug,Y_aug,w_aug,d_aug,pred_fun,thetaHat,T_dfun)
+  p_df = new_plausibility_contour(p_df)
+  return(p_df)
 
 }
 
@@ -178,4 +180,22 @@ plausibility_contour = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige
   }
   return(data.frame(Y_cand=Y_cand,p_y=p_y))
 
+}
+
+new_plausibility_contour = function(x = list()){
+  stopifnot(is.list(x))
+  structure(x, class = "plausibility_contour")
+}
+
+#' Plot a plausibility_contour object
+#'
+#' @param df a plausibility_contour object, returned by \code{\link{plausibility_contour}}
+#' @param ...
+#'
+#' @export
+#' @keywords internal
+plot.plausibility_contour = function(df, ...){
+  plot(df[[1]], df[[2]], type = "l",
+       xlab = "Y candidates", ylab = "plausibility",
+       ...)
 }
