@@ -5,7 +5,7 @@
 #' using spatial conformal prediction algorithms.
 #'
 #' @param s0 prediction location, a numeric vector with \code{length = 2}.
-#' @param s an \eqn{n \times 2}{n x 2} \code{matrix} or \code{data.frame} with two coordinates of \eqn{n} locations.
+#' @param s an \eqn{n \times 2}{n x 2} \code{matrix} or a \code{data.frame} with two coordinates of \eqn{n} locations.
 #' @param Y a vector with \eqn{n} values corresponding to \code{Y(s)}.
 #' @param global logical; if \code{TRUE} , \code{scp} function returns the result of global spatial conformal prediction (GSCP);
 #' if \code{FALSE}, \code{scp} function returns the result of local spatial conformal prediction (LSCP) and users need to
@@ -24,7 +24,7 @@
 #'             \code{"std_residual2"} represents standardized squared residual.
 #' @param precision a positive scalar represents how dense \code{Y(s)} candidates (\code{Y_cand}) are. Defaults to \code{NULL}.
 #'
-#' @return The output is a "plausibility_contour" object.
+#' @return The output is a ``plausibility_contour'' object.
 #' @export
 #'
 #' @author Huiying Mao, \email{hmao@@samsi.info}, Brian Reich \email{bjreich@@ncsu.edu}

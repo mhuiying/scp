@@ -6,7 +6,7 @@
 #'
 #' @param Y0 a scalar or a vector
 #' @param s0 prediction location, a numeric vector with \code{length = 2}.
-#' @param s an \eqn{n \times 2}{n x 2} \code{matrix} or \code{data.frame} with two coordinates of \eqn{n} locations.
+#' @param s an \eqn{n \times 2}{n x 2} \code{matrix} or a \code{data.frame} with two coordinates of \eqn{n} locations.
 #' @param Y a vector with \eqn{n} values corresponding to \code{Y(s)}.
 #' @param global logical; if \code{TRUE} , \code{scp} function returns the result of global spatial conformal prediction (GSCP);
 #' if \code{FALSE}, \code{scp} function returns the result of local spatial conformal prediction (LSCP) and users need to

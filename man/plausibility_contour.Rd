@@ -20,7 +20,7 @@ plausibility_contour(
 \arguments{
 \item{s0}{prediction location, a numeric vector with \code{length = 2}.}
 
-\item{s}{an \eqn{n \times 2}{n x 2} \code{matrix} or \code{data.frame} with two coordinates of \eqn{n} locations.}
+\item{s}{an \eqn{n \times 2}{n x 2} \code{matrix} or a \code{data.frame} with two coordinates of \eqn{n} locations.}
 
 \item{Y}{a vector with \eqn{n} values corresponding to \code{Y(s)}.}
 
@@ -48,7 +48,7 @@ In which, \code{"residual2"} (default) represents squared residual and
 \item{precision}{a positive scalar represents how dense \code{Y(s)} candidates (\code{Y_cand}) are. Defaults to \code{NULL}.}
 }
 \value{
-The output is a "plausibility_contour" object.
+The output is a ``plausibility_contour'' object.
 }
 \description{
 This function provides the plausibility contour for \code{Y(s0)},

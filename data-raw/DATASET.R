@@ -12,8 +12,9 @@ C = mat_cov(d,theta)
 X = t(chol(C))%*%rnorm(n)
 Y = X^3 + rnorm(n)
 
+names(s) = c("dim1", "dim2")
 sample_data = list(s=s, Y=Y)
-usethis::use_data(sample_data, compress = "xz")
+usethis::use_data(sample_data, compress = "xz", overwrite = TRUE)
 
 
 

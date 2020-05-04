@@ -22,7 +22,7 @@ plausibility(
 
 \item{s0}{prediction location, a numeric vector with \code{length = 2}.}
 
-\item{s}{an \eqn{n \times 2}{n x 2} \code{matrix} or \code{data.frame} with two coordinates of \eqn{n} locations.}
+\item{s}{an \eqn{n \times 2}{n x 2} \code{matrix} or a \code{data.frame} with two coordinates of \eqn{n} locations.}
 
 \item{Y}{a vector with \eqn{n} values corresponding to \code{Y(s)}.}
 

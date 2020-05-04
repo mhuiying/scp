@@ -2,7 +2,7 @@
 % Please edit documentation in R/scp.R
 \name{scp}
 \alias{scp}
-\title{Spatial conformal prediction at a single input location}
+\title{Spatial conformal prediction at input location(s)}
 \usage{
 scp(
   s0,
@@ -19,9 +19,11 @@ scp(
 )
 }
 \arguments{
-\item{s0}{prediction location, a numeric vector with \code{length = 2}.}
+\item{s0}{prediction location(s), a numeric vector with \code{length = 2},
+or a \code{matrix} with \code{ncol = 2},
+or a \code{data.frame} with two coordinates.}
 
-\item{s}{an \eqn{n \times 2}{n x 2} \code{matrix} or \code{data.frame} with two coordinates of \eqn{n} locations.}
+\item{s}{an \eqn{n \times 2}{n x 2} \code{matrix} or a \code{data.frame} with two coordinates of \eqn{n} locations.}
 
 \item{Y}{a vector with \eqn{n} values corresponding to \code{Y(s)}.}
 
@@ -50,22 +52,26 @@ In which, \code{"residual2"} (default) represents squared residual and
 \item{alpha}{significance level. Defaults to 0.05.}
 }
 \value{
-The output is a vector of lower and upper bounds of the conformal prediction interval.
+The output is a \code{data.frame} of lower and upper bounds of the conformal prediction interval(s) for \code{s0}.
 }
 \description{
-This function provides the spatial conformal prediction interval for location \code{s0},
+This function provides the spatial conformal prediction interval for location(s) \code{s0},
  given obserations \code{s} and \code{Y}.
 }
 \examples{
-## generate prediction interval for s0 = c(0.5,0.5) using sample data
+## generate prediction interval for prediction locations(s) s0(s) using sample data
 
 #?sample_data
-s0 = c(0.5,0.5)
 s  = sample_data$s
 Y  = sample_data$Y
 
+# locations to predict
+s0  = c(0.5,0.5)
+s0s = rbind(c(0.4, 0.4), c(0.5,0.5), c(0.6, 0.6))
+
 # default prediction interval
 scp(s0=s0,s=s,Y=Y)
+scp(s0=s0s,s=s,Y=Y)
 
 # user define eta=0.1, where LSCP is considered
 scp(s0=s0,s=s,Y=Y,eta=0.1)
