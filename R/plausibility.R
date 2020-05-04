@@ -1,11 +1,13 @@
-#' calculate plausibility for \code{Y0}
+#' calculate plausibility of \code{Y(s0)} being \code{Y0}
 #'
 #' @description This function provides the plausibility of \code{Y(s0)} being \code{Y0},
 #' given observations \code{s} and \code{Y},
 #' using spatial conformal prediction algorithms.
 #'
 #' @param Y0 a scalar or a vector
-#' @param s0 prediction location, a numeric vector with \code{length = 2}.
+#' @param s0 prediction location, a numeric vector with \code{length = 2}
+#'                             or a \code{matrix} with 1 row and 2 cols,
+#'                             or a data.frame with 1 row and 2 cordinates.
 #' @param s an \eqn{n \times 2}{n x 2} \code{matrix} or a \code{data.frame} with two coordinates of \eqn{n} locations.
 #' @param Y a vector with \eqn{n} values corresponding to \code{Y(s)}.
 #' @param global logical; if \code{TRUE} , \code{scp} function returns the result of global spatial conformal prediction (GSCP);
@@ -53,6 +55,13 @@ plausibility = function(Y0,s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred
                         dfun=c("residual2","std_residual2")){
 
   dfun = match.arg(dfun)
+
+  if( !is.matrix(s0) & !is.data.frame(s0) )
+    s0 = matrix(s0, ncol = 2)
+
+  if(length(Y0) != nrow(s0))
+    warning("For Y0 and s0, longer object length is not a multiple of shorter object length.")
+
   .prime(s0,s,Y,global,eta,m,dfun)
   if( !identical(pred_fun, krige_pred) | !grepl("residual2", dfun) ){
     Y_cand = Y0

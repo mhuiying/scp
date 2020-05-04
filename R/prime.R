@@ -2,7 +2,9 @@
 #'
 #' @description An internal function to transform the input parameters
 #'
-#' @param s0 prediction location, a numeric vector with \code{length = 2}.
+#' @param s0 prediction location, a numeric vector with \code{length = 2},
+#'                             or a \code{matrix} with 1 row and 2 cols,
+#'                             or a data.frame with 1 row and 2 cordinates.
 #' @param s an \eqn{n \times 2}{n x 2} \code{matrix} or \code{data.frame} with two coordinates of \eqn{n} locations.
 #' @param Y a vector with \eqn{n} values corresponding to \code{Y(s)}.
 #' @param global logical; if \code{TRUE} , \code{scp} function returns the result of global spatial conformal prediction (GSCP);
@@ -23,7 +25,7 @@
 
 .prime = function(s0,s,Y,global,eta,m,dfun){
 
-  idx = which(s[,1]==s0[1] & s[,2]==s0[2])
+  idx = which( s[,1] == as.numeric(s0[1]) & s[,2] == as.numeric(s0[2]) )
   if(length(idx) > 0){s = s[-idx,]; Y = Y[-idx]}
 
   these = .deter_these(s0,s,Y,global,eta,m)

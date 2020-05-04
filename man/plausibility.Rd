@@ -2,7 +2,7 @@
 % Please edit documentation in R/plausibility.R
 \name{plausibility}
 \alias{plausibility}
-\title{calculate plausibility for \code{Y0}}
+\title{calculate plausibility of \code{Y(s0)} being \code{Y0}}
 \usage{
 plausibility(
   Y0,
@@ -20,7 +20,9 @@ plausibility(
 \arguments{
 \item{Y0}{a scalar or a vector}
 
-\item{s0}{prediction location, a numeric vector with \code{length = 2}.}
+\item{s0}{prediction location, a numeric vector with \code{length = 2}
+or a \code{matrix} with 1 row and 2 cols,
+or a data.frame with 1 row and 2 cordinates.}
 
 \item{s}{an \eqn{n \times 2}{n x 2} \code{matrix} or a \code{data.frame} with two coordinates of \eqn{n} locations.}
 

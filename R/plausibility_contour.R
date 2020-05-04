@@ -4,7 +4,9 @@
 #' given observations \code{s} and \code{Y},
 #' using spatial conformal prediction algorithms.
 #'
-#' @param s0 prediction location, a numeric vector with \code{length = 2}.
+#' @param s0 prediction location, a numeric vector with \code{length = 2}
+#'                             or a \code{matrix} with 1 row and 2 cols,
+#'                             or a data.frame with 1 row and 2 cordinates.
 #' @param s an \eqn{n \times 2}{n x 2} \code{matrix} or a \code{data.frame} with two coordinates of \eqn{n} locations.
 #' @param Y a vector with \eqn{n} values corresponding to \code{Y(s)}.
 #' @param global logical; if \code{TRUE} , \code{scp} function returns the result of global spatial conformal prediction (GSCP);
