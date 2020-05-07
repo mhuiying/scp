@@ -51,6 +51,10 @@
 plausibility_contour = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred,thetaHat=NULL,
                                 dfun=c("residual2","std_residual2"),precision=NULL){
   dfun = match.arg(dfun)
+  if( !is.matrix(s0) & !is.data.frame(s0) ){
+    s0 = matrix(s0, ncol = 2)
+    colnames(s0) = colnames(s)
+  }
   .prime(s0,s,Y,global,eta,m,dfun)
   Y_cand = .generate_Y_cand(pred_fun, dfun, precision)
   p_df = .plausibility_contour(Y_cand,s_aug,Y_aug,w_aug,d_aug,pred_fun,thetaHat,T_dfun)

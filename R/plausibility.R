@@ -56,25 +56,23 @@ plausibility = function(Y0,s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred
 
   dfun = match.arg(dfun)
 
-  if( !is.matrix(s0) & !is.data.frame(s0) )
+  if( !is.matrix(s0) & !is.data.frame(s0) ){
     s0 = matrix(s0, ncol = 2)
-
-  if(length(Y0) != nrow(s0))
-    warning("For Y0 and s0, longer object length is not a multiple of shorter object length.")
+    colnames(s0) = colnames(s)
+  }
 
   .prime(s0,s,Y,global,eta,m,dfun)
   if( !identical(pred_fun, krige_pred) | !grepl("residual2", dfun) ){
     Y_cand = Y0
-    return(.plausibility_contour(Y_cand,s_aug,Y_aug,w_aug,d_aug,pred_fun,thetaHat,T_dfun)$p_y)
+    p_Y0   = .plausibility_contour(Y_cand,s_aug,Y_aug,w_aug,d_aug,pred_fun,thetaHat,T_dfun)$p_y
   } else {
     p_df   = .plausibility_contour(Y_cand=NULL,s_aug,Y_aug,w_aug,d_aug,pred_fun,thetaHat,T_dfun)
     Y_cand = p_df$Y_cand
     p_y    = p_df$p_y
 
-    Y0    = sapply(Y0, function(x) min(max(Y_cand), x))
-    p_Y0  = sapply(Y0, function(x) p_y[which(Y_cand >= x)[1]])
-    return( p_Y0 )
+    Y0   = sapply(Y0, function(x) min(max(Y_cand), x))
+    p_Y0 = sapply(Y0, function(x) p_y[which(Y_cand >= x)[1]])
   }
-
+  return( p_Y0 )
 
 }

@@ -62,8 +62,10 @@ scp = function(s0,s,Y,global=TRUE,eta=Inf,m=NULL,pred_fun=krige_pred,thetaHat=NU
 
   dfun = match.arg(dfun)
 
-  if( !is.matrix(s0) & !is.data.frame(s0) )
+  if( !is.matrix(s0) & !is.data.frame(s0) ){
     s0 = matrix(s0, ncol = 2)
+    colnames(s0) = colnames(s)
+  }
 
   n_pred_loc = nrow(s0)
   gamma = data.frame(lower = rep(NA, n_pred_loc), upper = rep(NA, n_pred_loc))
