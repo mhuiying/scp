@@ -28,10 +28,6 @@
 #' krige_pred(s0,s,Y,return_sd=TRUE)
 krige_pred = function(s0,s,Y,return_sd=FALSE){
 
-  # Suppose s does not have duplicates
-  # check s0 is numeric
-  # check s is data.frame. What if s is in matrix format
-
   if( length(Y) != nrow(s) )
     stop( paste("the number of Y obs,", length(Y), ", does not match the number of locations,", nrow(s)) )
   if( length(s0) != ncol(s) )

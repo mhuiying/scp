@@ -1,0 +1,107 @@
+---
+title: "Getting Started with the scp Package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width=6, 
+  fig.height=5.5
+)
+```
+
+```{r setup, echo=FALSE}
+suppressMessages(library(fields))
+suppressMessages(library(viridis))
+```
+
+Predicting the response at an unobserved location is a fundamental problem in spatial statistics. Package `scp` helps you build valid and robust spatial prediction intervals based on conformal prediction machinery. 
+
+## Aplication scenarios
+
+For example, if you are interested in identifying the prediction intervals of locations $(x,y) = (0.25, 0.25), (0.50, 0.50)$, and $(0.75, 0.75)$ for the following plotted spatial process $Y(s)$, where $s = (x,y)$. The spatial observations are stored as `sample_data` in package `scp`. The process is apparently non-stationary. 
+
+
+```{r example spatial process}
+library(scp)
+
+data(sample_data)
+s  = sample_data$s
+Y  = sample_data$Y
+
+s0s = rbind(c(0.25, 0.25), c(0.50, 0.50), c(0.75, 0.75))
+```
+
+```{r visualizaton, echo = FALSE}
+quilt.plot(s, Y, col = viridis(50, option = "D"), nx = 41, ny = 41, xlab = "x", ylab = "y")
+text(s0s[,1], s0s[,2], col = "red", labels=1:nrow(s0s), cex = 1.5)
+```
+
+One could simply start with the default `scp` function, which returns the lower bounds and upper bounds for the 95% predictin intervals using the **global spatial conformal prediction (GSCP)** algorithm.
+
+```{r scp usage}
+gPI = scp(s0s, s, Y)
+data.frame(gPI, width = gPI[,2] - gPI[,1])
+```
+
+Since $Y(s)$ is an apparent non-stationary process, whose correlation is stronger in the east than the west, the **local spatial conformal prediction (LSCP)** is a better approach. Specifying the tunning parameter `eta` as a positive small number in the `scp` function would trigger a local spatial conformal prediction procedure. For example, 
+
+```{r lscp usage}
+lPI = scp(s0s, s, Y, eta = 0.15)
+data.frame(lPI, width = lPI[,2] - lPI[,1])
+```
+As we can see, LSCP generates more efficient prediction itnerval for location 3 than location 1. It adaptively provides efficient prediction intervals by talking into considerations its strong correlation with its neighbors. We also have a function to help you select `eta`, which will be discussed later. For more details about the different usage of GSCP and LSCP, please refer to Mao et al. (2020).
+
+<!-- The true value for the locations are -->
+<!-- ```{r true value, echo = FALSE} -->
+<!-- for(i in 1:nrow(s0)){ -->
+<!--   idx = which(s[,1] == s0[i,1] & s[,2] == s0[i,2]) -->
+<!--   print(Y[idx]) -->
+<!-- } -->
+<!-- ``` -->
+
+<!-- ```{r krige result} -->
+<!-- krige_result = apply(s0, 1, FUN = krige_pred, s = s, Y = Y, return_sd = TRUE) -->
+<!-- do.call(rbind, lapply(krige_result, FUN = function(x) x$yhat + qnorm(1-alpha/2)*c(-1,1)*x$sd)) -->
+<!-- ``` -->
+
+## Plausibility
+
+The idea of spatial conformal prediction inherits from the classical conformal prediction algorithm, which begins with calculating the plausibility of $Y(s_{0})$ being $Y_0$. For example, the following code calculates the plausibility of $Y(s_{0})$ being 0, where $s_{0} = (0.5, 0.5)$. 
+
+```{r plausibiltiy}
+s0 = c(0.5,0.5)
+plausibility(Y0 = 0, s0 = s0, s = s, Y = Y,eta = 0.15)
+```
+
+Connecting all possible $Y$ values and their plausibility, we could have a plausibility contour:
+```{r plausibility contour}
+pc = plausibility_contour(s0 = s0, s = s, Y = Y, eta = 0.15)
+plot(pc)
+abline(h = 0.05, col = "red", lty = 2)
+abline(h = 0.2, col = "blue", lty = 3)
+```
+
+The 95% prediction interval is the level set corresponding to $\alpha = 0.05$ (red), i.e., `r paste("[", paste(round(scp(s0=c(0.5,0.5), s=s, Y=Y, eta=0.15), digits = 2), collapse = ", "), "]")`; and the 80% prediction interval is the level set corresponding to $\alpha = 0.20$ (blue), i.e., `r paste("[", paste(round(scp(s0=c(0.5,0.5), s=s, Y=Y, eta=0.15, alpha=0.2), digits = 2), collapse = ", "), "]")`. For more details about plausibility, please refer to Mao et al. (2020) section 2.2 and [Cella & Martin (2020)](https://arxiv.org/abs/2001.09225). 
+
+## Tunning parameter selection
+
+We also have a `select_eta` function to help with the `eta` selectioin. It returns the optimal `eta` which minimizes the empirical interval score on 100 randomly selected locations. 
+
+```{r select eta, eval=FALSE}
+select_eta(s = s, Y = Y)
+#> [1] 0.15
+```
+
+```{r load prev calced result, echo = FALSE}
+eta_cand = scp:::eta_cand
+intScore = scp:::intScore
+plot(eta_cand, intScore, type = "b", xlab = "eta", ylab = "interval score")
+abline(v = eta_cand[which.min(intScore)], col = "red", lty = 2)
+```

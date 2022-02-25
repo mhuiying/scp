@@ -27,7 +27,7 @@ or a \code{data.frame} with two coordinates.}
 
 \item{Y}{a vector with \eqn{n} values corresponding to \code{Y(s)}.}
 
-\item{global}{logical; if \code{TRUE} , \code{scp} function returns the result of global spatial conformal prediction (GSCP);
+\item{global}{logical; if \code{TRUE}, \code{scp} function returns the result of global spatial conformal prediction (GSCP);
 if \code{FALSE}, \code{scp} function returns the result of local spatial conformal prediction (LSCP)
 and users need to specify \code{eta}. Defaults to \code{TRUE}.}
 
