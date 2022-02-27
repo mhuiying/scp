@@ -16,11 +16,11 @@ Suggests:
     knitr,
     rmarkdown,
     covr,
-    testthat,
-    fields,
-    viridis
+    testthat
 VignetteBuilder: knitr
 Imports: 
-    geoR
+    geoR,
+    fields,
+    viridis
 Depends: 
     R (>= 2.10)
