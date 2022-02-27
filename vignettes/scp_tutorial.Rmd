@@ -2,7 +2,7 @@
 title: "Getting Started with the scp Package"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{my-vignette}
+  %\VignetteIndexEntry{scp_tutorial}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,12 +16,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, echo=FALSE}
-suppressMessages(library(fields))
-suppressMessages(library(viridis))
+```{r setup, echo=FALSE, results = "hide"}
+library(fields)
+library(viridis)
 ```
 
-Predicting the response at an unobserved location is a fundamental problem in spatial statistics. Package `scp` helps you build valid and robust spatial prediction intervals based on conformal prediction machinery. 
+Predicting the response at an unobserved location is a fundamental problem in spatial statistics. `R` package `scp` helps you build valid and robust spatial prediction intervals based on conformal prediction machinery. 
 
 ## Aplication scenarios
 

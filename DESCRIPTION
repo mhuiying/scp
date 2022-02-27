@@ -16,7 +16,9 @@ Suggests:
     knitr,
     rmarkdown,
     covr,
-    testthat
+    testthat,
+    fields,
+    viridis
 VignetteBuilder: knitr
 Imports: 
     geoR
