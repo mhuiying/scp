@@ -19,4 +19,8 @@ Suggests:
     testthat
 VignetteBuilder: knitr
 Imports: 
-    geoR
+    geoR,
+    fields,
+    viridis
+Depends: 
+    R (>= 2.10)

@@ -11,7 +11,7 @@
 #' @keywords internal
 #'
 mat_cov = function(d,theta){
-  theta[1]*(d==0) + theta[2]*matern(d,theta[3],theta[4])
+  theta[1]*diag(nrow(d)) + theta[2]*matern(d,theta[3],theta[4])
 }
 
 

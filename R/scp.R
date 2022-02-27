@@ -8,7 +8,7 @@
 #'                                   or a \code{data.frame} with two coordinates.
 #' @param s an \eqn{n \times 2}{n x 2} \code{matrix} or a \code{data.frame} with two coordinates of \eqn{n} locations.
 #' @param Y a vector with \eqn{n} values corresponding to \code{Y(s)}.
-#' @param global logical; if \code{TRUE} , \code{scp} function returns the result of global spatial conformal prediction (GSCP);
+#' @param global logical; if \code{TRUE}, \code{scp} function returns the result of global spatial conformal prediction (GSCP);
 #' if \code{FALSE}, \code{scp} function returns the result of local spatial conformal prediction (LSCP)
 #' and users need to specify \code{eta}. Defaults to \code{TRUE}.
 #' @param eta kernel bandwidth for weight schema, a positve scalar with smaller value meaning more localized procedure.

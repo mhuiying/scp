@@ -25,8 +25,8 @@
 
 .prime = function(s0,s,Y,global,eta,m,dfun){
 
-  idx = which( s[,1] == as.numeric(s0[1]) & s[,2] == as.numeric(s0[2]) )
-  if(length(idx) > 0){s = s[-idx,]; Y = Y[-idx]}
+  # idx = which( s[,1] == as.numeric(s0[1]) & s[,2] == as.numeric(s0[2]) )
+  # if(length(idx) > 0){s = s[-idx,]; Y = Y[-idx]}
 
   these = .deter_these(s0,s,Y,global,eta,m)
   s_aug = rbind(s0, s[these,])
@@ -71,16 +71,21 @@
 #' @keywords internal
 .deter_these = function(s0,s,Y,global,eta,m){
 
-  if( eta <= 0 )
+  if( eta <= 0 ){
     stop("Please provide a positive eta")
-  else if( eta < Inf )
+  }  else if( eta < Inf ){
     global = FALSE
+  }
 
-  if( !is.null(m) )
-    if( (m <= 0 | m%%1!=0) )
+  if( !is.null(m) ){
+    if( (m <= 0 | m%%1!=0) ){
       stop("Please provide a positive integer for m")
-    else if( m < length(Y) )
+    }
+    else if( m < length(Y) ){
       global = FALSE
+    }
+  }
+
 
   if(global){ # GSCP
 
@@ -88,11 +93,11 @@
 
   } else {    # LSCP
 
-    dist = sqrt( (s0[1]-s[,1])^2 + (s0[2]-s[,2])^2 )
+    dist = sqrt( (as.numeric(s0[1])-s[,1])^2 + (as.numeric(s0[2])-s[,2])^2 )
     if(is.null(m)){
       these = (dist < 2*eta)
       if( sum(these) > 5 ){
-        dist_mat = apply(s[these,], 1, FUN = function(s0) sqrt( (s0[1]-s[,1])^2 + (s0[2]-s[,2])^2 ) )
+        dist_mat = apply(s[these,], 1, FUN = function(s0) sqrt( (as.numeric(s0[1])-s[,1])^2 + (as.numeric(s0[2])-s[,2])^2 ) )
         these = apply(dist_mat, 2, FUN = function(x) order(x)[1:15])
         these = unique(as.vector(these))
       } else {
