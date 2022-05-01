@@ -4,7 +4,7 @@
 \alias{get_theta}
 \title{Estimate theta via variogram fitting}
 \usage{
-get_theta(s, Y, dists = NULL)
+get_theta(s, Y, dists = NULL, max_range = NULL)
 }
 \arguments{
 \item{s}{spatial location}
@@ -13,7 +13,7 @@ get_theta(s, Y, dists = NULL)
 
 \item{dists}{breakpoints for bins}
 
-\item{plot_fitted}{will plot a emperical variogram if specified as TRUE}
+\item{max_range}{maximum range}
 }
 \value{
 Matern covariance parameters
