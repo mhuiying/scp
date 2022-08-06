@@ -8,7 +8,6 @@
 #' @return Matern covariance parameters
 #' @export
 #'
-#' @importFrom geoR variog
 #' @importFrom dplyr left_join
 #' @keywords internal
 #'

@@ -6,8 +6,6 @@
 #' @return a numeric covariance, a vector of covariances, or a covariance matrix in the same size of \eqn{d}
 #' @export
 #'
-#' @importFrom geoR matern
-#'
 #' @keywords internal
 #'
 mat_cov = function(d,theta){
